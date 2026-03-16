@@ -1,0 +1,2 @@
+# VL53L5CX init loads ~80KB firmware over I2C — needs extra stack
+CONFIG_ESP_MAIN_TASK_STACK_SIZE=8192
