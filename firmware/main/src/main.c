@@ -1,10 +1,13 @@
 #include "esp_log.h"
+#include "esp_timer.h"
 #include "freertos/FreeRTOS.h"
+#include "freertos/projdefs.h"
 #include "freertos/task.h"
 #include "hc_sr04.h"
 #include "portmacro.h"
 #include <esp_adc/adc_oneshot.h>
 #include <math.h>
+#include <stdint.h>
 #include <stdio.h>
 
 #define DISTANCE_BETWEEN_SENSORS 10.0f // cm
@@ -24,30 +27,118 @@ float get_delta_p(float y0, float y1) {
 }
 
 void vCalcTask(void *vParams) {
+
+  enum CalcState {
+    CALIBRATION,
+    NO_PROJECTILE,
+    SINGLE_SENSOR_LOCK,
+  } calc_state = CALIBRATION;
+
+  float first_sensor_dist = -1.0f;
+  int first_sensor_id = -1;
+  int64_t first_sensor_time = 0;
+
+  typedef struct {
+    float distance_cm;
+    int64_t num_frames;
+  } SensorCalibration;
+  SensorCalibration calibration_data[2] = {0};
+
   float distances[2] = {0.0f, 0.0f};
   int64_t times[2] = {0, 0};
+
   // vParams (void*) -> sesnsor data array (SensorData*) -> indiviual data
   for (;;) {
-    if (((SensorData **)vParams)[0]->xSemaphore != NULL &&
-        xSemaphoreTake(((SensorData **)vParams)[0]->xSemaphore,
-                       (TickType_t)10) == pdTRUE) {
-      distances[0] = ((SensorData **)vParams)[0]->distance_cm;
-      times[0] = ((SensorData **)vParams)[0]->last_updated_us;
-      xSemaphoreGive(((SensorData **)vParams)[0]->xSemaphore);
+    switch (calc_state) {
+    case CALIBRATION:
+      if (esp_timer_get_time() >
+          1000000 * 2) // 2 second delay before calibrating
+      {
+        if (esp_timer_get_time() <
+            1000000 * (3 + 2)) // 3 second calibration phase
+        {
+          // rolling average:
+          //(old_average * (n-1) + new_value) / n
+          for (size_t i = 0; i < 2; i++) {
+            if (((SensorData **)vParams)[i]->xSemaphore != NULL &&
+                xSemaphoreTake(((SensorData **)vParams)[i]->xSemaphore,
+                               (TickType_t)10) == pdTRUE) {
+
+              calibration_data[i].num_frames++;
+              calibration_data[i].distance_cm =
+                  (calibration_data[i].distance_cm *
+                       (calibration_data[i].num_frames - 1) +
+                   ((SensorData **)vParams)[i]->distance_cm) /
+                  calibration_data[i].num_frames;
+
+              xSemaphoreGive(((SensorData **)vParams)[i]->xSemaphore);
+            }
+          }
+        } else {
+
+          calc_state = NO_PROJECTILE;
+        }
+      }
+      break;
+    case NO_PROJECTILE:
+      for (size_t i = 0; i < 2; i++) {
+        if (((SensorData **)vParams)[i]->xSemaphore != NULL &&
+            xSemaphoreTake(((SensorData **)vParams)[i]->xSemaphore,
+                           (TickType_t)10) == pdTRUE) {
+          float dist = ((SensorData **)vParams)[i]->distance_cm;
+          xSemaphoreGive(((SensorData **)vParams)[i]->xSemaphore);
+          if (dist < (calibration_data[i].distance_cm * 0.95)) {
+            calc_state = SINGLE_SENSOR_LOCK;
+            first_sensor_dist = dist;
+            first_sensor_id = i;
+            first_sensor_time = esp_timer_get_time();
+            break;
+          }
+        }
+      }
+      break;
+    case SINGLE_SENSOR_LOCK:
+      // TODO: wait till target accuired and then record data. Then calc
+      // velocity
+      int i = first_sensor_id == 1 ? 0 : 1;
+      if (((SensorData **)vParams)[i]->xSemaphore != NULL &&
+          xSemaphoreTake(((SensorData **)vParams)[i]->xSemaphore,
+                         (TickType_t)10) == pdTRUE) {
+        float dist = ((SensorData **)vParams)[i]->distance_cm;
+        xSemaphoreGive(((SensorData **)vParams)[i]->xSemaphore);
+        if (dist < (calibration_data[i].distance_cm * 0.95)) {
+          calc_state = NO_PROJECTILE;
+
+          float delta_p = get_delta_p(first_sensor_dist, dist);
+          float dt_s = (esp_timer_get_time() - first_sensor_time) / 1000000.0f;
+          float vel = delta_p / dt_s; // cm/s
+          ESP_LOGI(TAG, "VEL: %f", vel);
+        }
+      }
+      break;
     }
-    if (((SensorData **)vParams)[1]->xSemaphore != NULL &&
-        xSemaphoreTake(((SensorData **)vParams)[1]->xSemaphore,
-                       (TickType_t)10) == pdTRUE) {
-      distances[1] = ((SensorData **)vParams)[1]->distance_cm;
-      times[1] = ((SensorData **)vParams)[1]->last_updated_us;
-      xSemaphoreGive(((SensorData **)vParams)[1]->xSemaphore);
-    }
-    float delta_p = get_delta_p(distances[0], distances[1]);
-    float velocity = (times[1] + times[0]) != 0
-                         ? delta_p / ((times[1] - times[0]) / 1000000.0f)
-                         : 0.0f; // cm/s
-    ESP_LOGI(TAG, "Delta P: %.2f cm, Velocity: %.2f cm/s", delta_p, velocity);
-    vTaskDelay(pdMS_TO_TICKS(100)); // Update every 100 ms
+    // OLD CODE:
+    //  if (((SensorData **)vParams)[0]->xSemaphore != NULL &&
+    //      xSemaphoreTake(((SensorData **)vParams)[0]->xSemaphore,
+    //                     (TickType_t)10) == pdTRUE) {
+    //    distances[0] = ((SensorData **)vParams)[0]->distance_cm;
+    //    times[0] = ((SensorData **)vParams)[0]->last_updated_us;
+    //    xSemaphoreGive(((SensorData **)vParams)[0]->xSemaphore);
+    //  }
+    //  if (((SensorData **)vParams)[1]->xSemaphore != NULL &&
+    //      xSemaphoreTake(((SensorData **)vParams)[1]->xSemaphore,
+    //                     (TickType_t)10) == pdTRUE) {
+    //    distances[1] = ((SensorData **)vParams)[1]->distance_cm;
+    //    times[1] = ((SensorData **)vParams)[1]->last_updated_us;
+    //    xSemaphoreGive(((SensorData **)vParams)[1]->xSemaphore);
+    //  }
+    //  float delta_p = get_delta_p(distances[0], distances[1]);
+    //  float velocity = (times[1] + times[0]) != 0
+    //                       ? delta_p / ((times[1] - times[0]) / 1000000.0f)
+    //                       : 0.0f; // cm/s
+    //  ESP_LOGI(TAG, "Delta P: %.2f cm, Velocity: %.2f cm/s", delta_p,
+    //  velocity); vTaskDelay(pdMS_TO_TICKS(100)); // Update every 100 ms
+    vTaskDelay(pdMS_TO_TICKS(10));
   }
 }
 
