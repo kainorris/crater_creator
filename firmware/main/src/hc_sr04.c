@@ -1,42 +1,10 @@
-#include "hal/gpio_types.h"
-#include <assert.h>
-#include <driver/gpio.h>
 
-/**
-   HC-SR04 Demo
-   Demonstration of the HC-SR04 Ultrasonic Sensor
-   Date: August 3, 2016
-
-   Description:
-    Connect the ultrasonic sensor to the Arduino as per the
-    hardware connections below. Run the sketch and open a serial
-    monitor. The distance read from the sensor will be displayed
-    in centimeters and inches.
-
-   Hardware Connections:
-    Arduino | HC-SR04
-    -------------------
-      5V    |   VCC
-      7     |   Trig
-      8     |   Echo
-      GND   |   GND
-
-   License:
-    Public Domain
-*/
-
-static QueueHandle_t gpio_evt_queue = NULL;
-
-typedef struct {
-  int trig_pin;
-  int echo_pin;
-} HCSR04;
+#include "hc_sr04.h"
 
 // Anything over 400 cm (23200 us pulse) is "out of range"
-#define HCSR04_MAX_DIST = 23200u;
+#define HCSR04_MAX_DIST_US 23200
 
-void setup(HCSR04 *sensor) {
-  gpio_dump_io_configuration(stdout, SOC_GPIO_VALID_GPIO_MASK);
+int hcsr04_init(HCSR04 *sensor) {
   assert(GPIO_IS_VALID_OUTPUT_GPIO(sensor->trig_pin));
   assert(GPIO_IS_VALID_GPIO(sensor->echo_pin));
 
@@ -48,73 +16,52 @@ void setup(HCSR04 *sensor) {
       .pull_down_en = 0,
       .pull_up_en = 0,
   };
-
-  gpio_config(&io_conf);
+  int cfg_result = gpio_config(&io_conf);
 
   // Echo input conf
   io_conf.mode = GPIO_MODE_INPUT;
-  io_conf.intr_type =
-      GPIO_INTR_POSEDGE; // Trigger on rising edge - allows us to instantly
-                         // capture the time of the rising edge
+  io_conf.intr_type = GPIO_INTR_DISABLE; // Polling mode, so disable interrupts
   io_conf.pin_bit_mask = (1ULL << sensor->echo_pin);
-  gpio_config(&io_conf);
-
-  // create a queue to handle gpio event from isr
-  gpio_evt_queue = xQueueCreate(10, sizeof(uint32_t));
-
-  // The Trigger pin will tell the sensor to range find
-  pinMode(TRIG_PIN, OUTPUT);
-  digitalWrite(TRIG_PIN, LOW);
-
-  // Set Echo pin as input to measure the duration of
-  // pulses coming back from the distance sensor
-  pinMode(ECHO_PIN, INPUT);
-
-  // We'll use the serial monitor to view the sensor output
-  Serial.begin(9600);
+  cfg_result |= gpio_config(&io_conf);
+  return cfg_result;
 }
 
-void loop() {
-
-  unsigned long t1;
-  unsigned long t2;
-  unsigned long pulse_width;
-  float cm;
-  float inches;
+// Blocks and measures distance in centimeters. Returns -1.0 if out of range.
+float hcsr04_read_cm(HCSR04 *sensor) {
+  uint32_t t1;
+  uint32_t t2;
+  uint32_t pulse_width;
 
   // Hold the trigger pin high for at least 10 us
-  digitalWrite(TRIG_PIN, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(TRIG_PIN, LOW);
+  gpio_set_level(sensor->trig_pin, 1);
+  esp_rom_delay_us(10);
+  gpio_set_level(sensor->trig_pin, 0);
 
   // Wait for pulse on echo pin
-  while (digitalRead(ECHO_PIN) == 0)
-    ;
-
-  // Measure how long the echo pin was held high (pulse width)
-  // Note: the micros() counter will overflow after ~70 min
-  t1 = micros();
-  while (digitalRead(ECHO_PIN) == 1)
-    ;
-  t2 = micros();
-  pulse_width = t2 - t1;
-
-  // Calculate distance in centimeters and inches. The constants
-  // are found in the datasheet, and calculated from the assumed speed
-  // of sound in air at sea level (~340 m/s).
-  cm = pulse_width / 58.0;
-  inches = pulse_width / 148.0;
-
-  // Print out results
-  if (pulse_width > MAX_DIST) {
-    Serial.println("Out of range");
-  } else {
-    Serial.print(cm);
-    Serial.print(" cm \t");
-    Serial.print(inches);
-    Serial.println(" in");
+  int64_t wait_start = esp_timer_get_time();
+  while (gpio_get_level(sensor->echo_pin) == 0) {
+    if (esp_timer_get_time() - wait_start > 10000) {
+      // Timeout waiting for echo to go high
+      return -1.0f;
+    }
   }
 
-  // Wait at least 60ms before next measurement
-  delay(60);
+  // Measure how long the echo pin was held high (pulse width)
+  t1 = esp_timer_get_time();
+  while (gpio_get_level(sensor->echo_pin) == 1) {
+    if (esp_timer_get_time() - t1 > HCSR04_MAX_DIST_US) {
+      // Timeout, exceeded max distance
+      return -1.0f;
+    }
+  }
+  t2 = esp_timer_get_time();
+
+  pulse_width = t2 - t1;
+
+  // Calculate distance in centimeters. The constants
+  // are found in the datasheet, and calculated from the assumed speed
+  // of sound in air at sea level (~340 m/s).
+  float cm = pulse_width / 58.0f;
+
+  return cm;
 }
