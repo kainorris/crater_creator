@@ -112,7 +112,8 @@ void vCalcTask(void *vParams) {
           float delta_p = get_delta_p(first_sensor_dist, dist);
           float dt_s = (esp_timer_get_time() - first_sensor_time) / 1000000.0f;
           float vel = delta_p / dt_s; // cm/s
-          ESP_LOGI(TAG, "VEL: %f", vel);
+                                      // ESP_LOGI(TAG, "VEL: %f", vel);
+          printf("V@E#F:%f\n", vel);
         }
       }
       break;
@@ -146,7 +147,7 @@ void vSensorTask(void *vParams) {
 
   int init_result = hcsr04_init(((SensorData *)vParams)->sensor);
   if (init_result != 0) {
-    ESP_LOGE(TAG, "Failed to initialize HC-SR04 sensor: %d", init_result);
+    // ESP_LOGE(TAG, "Failed to initialize HC-SR04 sensor: %d", init_result);
     vTaskDelete(NULL);
     return;
   }
@@ -154,9 +155,9 @@ void vSensorTask(void *vParams) {
   while (1) {
     float distance_cm = hcsr04_read_cm(((SensorData *)vParams)->sensor);
     if (distance_cm < 0) {
-      ESP_LOGW(TAG, "HC-SR04 out of range");
+      // ESP_LOGW(TAG, "HC-SR04 out of range");
     } else {
-      ESP_LOGI(TAG, "HC-SR04 distance: %.2f cm", distance_cm);
+      // ESP_LOGI(TAG, "HC-SR04 distance: %.2f cm", distance_cm);
       while ((((SensorData *)vParams)->xSemaphore == NULL) ||
              (xSemaphoreTake(((SensorData *)vParams)->xSemaphore,
                              (TickType_t)10) != pdTRUE)) {
@@ -184,7 +185,7 @@ void app_main(void) {
                                      .xSemaphore = NULL,
                                      .distance_cm = 0.0f,
                                      .last_updated_us = 0};
-  ESP_LOGI(TAG, "Crater Creator firmware starting...");
+  // ESP_LOGI(TAG, "Crater Creator firmware starting...");
   sensor_data_1.xSemaphore = xSemaphoreCreateMutex();
   sensor_data_2.xSemaphore = xSemaphoreCreateMutex();
   xTaskCreate(vSensorTask, "SensorTask1", 2048, (void *)&sensor_data_1, 5,
