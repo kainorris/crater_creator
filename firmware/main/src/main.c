@@ -9,6 +9,7 @@
 #include <math.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <unistd.h>
 
 #define DISTANCE_BETWEEN_SENSORS 10.0f // cm
 
@@ -46,6 +47,7 @@ void vCalcTask(void *vParams) {
 
   float distances[2] = {0.0f, 0.0f};
   int64_t times[2] = {0, 0};
+  int sleep_time0 = esp_timer_get_time();
 
   // vParams (void*) -> sesnsor data array (SensorData*) -> indiviual data
   for (;;) {
@@ -114,6 +116,7 @@ void vCalcTask(void *vParams) {
           float vel = delta_p / dt_s; // cm/s
                                       // ESP_LOGI(TAG, "VEL: %f", vel);
           printf("V@E#F:%f\n", vel);
+          sleep(5);
         }
       }
       break;
