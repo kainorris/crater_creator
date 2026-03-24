@@ -89,7 +89,7 @@ void vCalcTask(void *vParams) {
                            (TickType_t)10) == pdTRUE) {
           float dist = ((SensorData **)vParams)[i]->distance_cm;
           xSemaphoreGive(((SensorData **)vParams)[i]->xSemaphore);
-          if (dist < (calibration_data[i].distance_cm * 0.95)) {
+          if (dist < (calibration_data[i].distance_cm * 0.4)) {
             calc_state = SINGLE_SENSOR_LOCK;
             first_sensor_dist = dist;
             first_sensor_id = i;
@@ -108,7 +108,7 @@ void vCalcTask(void *vParams) {
                          (TickType_t)10) == pdTRUE) {
         float dist = ((SensorData **)vParams)[i]->distance_cm;
         xSemaphoreGive(((SensorData **)vParams)[i]->xSemaphore);
-        if (dist < (calibration_data[i].distance_cm * 0.95)) {
+        if (dist < (calibration_data[i].distance_cm * 0.4)) {
           calc_state = NO_PROJECTILE;
 
           float delta_p = get_delta_p(first_sensor_dist, dist);
@@ -116,7 +116,7 @@ void vCalcTask(void *vParams) {
           float vel = delta_p / dt_s; // cm/s
                                       // ESP_LOGI(TAG, "VEL: %f", vel);
           printf("V@E#F:%f\n", vel);
-          sleep(5);
+          sleep(2);
         }
       }
       break;

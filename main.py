@@ -21,6 +21,7 @@ PX_PER_MILE = (MAP_W - (MAP_MARGIN * 2)) / USA_WIDTH_MILES
 
 # Colors
 GOLD = (218, 165, 32)
+RED = (255, 0, 0)
 WHITE = (255, 255, 255)
 CYAN = (0, 180, 220)
 SPACE_BLACK = (8, 8, 15)
@@ -57,9 +58,15 @@ class CraterCreator:
         self.impact_pos = (MAP_W // 2, TOP_BAR_H + (MAP_H // 2))
         self.leaderboard = []
         self.flash_alpha = 0
+        self.desktop_mode = False
 
         # Serial connection to ESP32
-        self.ser = serial.Serial("/dev/ttyUSB0", 115200, timeout=0)
+        try:
+            print("here")
+            self.ser = serial.Serial("/dev/ttyUSB0", 115200, timeout=10)
+        except serial.SerialException:
+            print("here")
+            self.desktop_mode = True
 
     def calculate_crater(self, sensor_vel):
         if sensor_vel < 0.1:
@@ -86,6 +93,10 @@ class CraterCreator:
 
         # Top Bar (Mission Control)
         title = self.font_header.render("ORBITAL IMPACT COMMAND", True, GOLD)
+        if self.desktop_mode:
+            title = self.font_header.render(
+                "!!!DEBUG MODE!!! ORBITAL IMPACT COMMAND", True, RED
+            )
         self.canvas.blit(title, (50, 20))
 
         stats = [
@@ -139,7 +150,8 @@ class CraterCreator:
                     return
 
             # Read serial data from ESP32
-            if self.ser.in_waiting:
+            print(f"{self.desktop_mode=}")
+            if not self.desktop_mode and self.ser.in_waiting:
                 line = self.ser.readline().decode("utf-8", errors="ignore").strip()
                 if line.startswith("V@E#F:"):
                     try:
@@ -152,7 +164,8 @@ class CraterCreator:
                         self.impact_pos = (
                             random.randint(MAP_MARGIN + 200, MAP_W - MAP_MARGIN - 200),
                             random.randint(
-                                TOP_BAR_H + MAP_MARGIN + 200, VIRTUAL_H - MAP_MARGIN - 200
+                                TOP_BAR_H + MAP_MARGIN + 200,
+                                VIRTUAL_H - MAP_MARGIN - 200,
                             ),
                         )
 
