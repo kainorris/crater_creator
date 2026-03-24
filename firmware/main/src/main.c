@@ -5,6 +5,7 @@
 #include "freertos/task.h"
 #include "hc_sr04.h"
 #include "portmacro.h"
+#include "vl53l5cx_api.h"
 #include <esp_adc/adc_oneshot.h>
 #include <math.h>
 #include <stdint.h>
