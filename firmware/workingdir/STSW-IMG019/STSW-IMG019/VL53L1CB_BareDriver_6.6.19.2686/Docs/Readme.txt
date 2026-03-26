@@ -1,0 +1,2 @@
+VL53L1 user manual (UM2133) is avaliable on below link:
+https://www.st.com/resource/en/user_manual/um2133-timeofflight-longdistance-ranging-sensor-with-advanced-multizone-and-multiobject-detection-stmicroelectronics.pdf
