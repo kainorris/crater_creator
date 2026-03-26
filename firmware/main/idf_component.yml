@@ -1,6 +1,2 @@
 dependencies:
-  rjrp44/vl53l5cx: ^2.0.4
-  espressif/arduino-esp32: ^3.3.7
-  esp_codec_dev:
-    public: true
-    version: "==1.1.0"
+  ESP32-VL53L1X: 1.0
