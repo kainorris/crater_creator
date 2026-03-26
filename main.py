@@ -128,7 +128,7 @@ class CraterCreator:
             else:
                 color = (60, 60, 75)
 
-            txt = self.font_data_lbl.render(f"{val} km", True, color)
+            txt = self.font_data_lbl.render(f"{i+1}. {val} km", True, color)
             self.canvas.blit(txt, (MAP_W + 60, TOP_BAR_H + 160 + i * 95))
 
         # Crater Visual
