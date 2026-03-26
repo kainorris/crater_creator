@@ -201,6 +201,16 @@ dependencies:
       registry_url: https://components.espressif.com
       type: service
     version: 1.6.8
+  espressif/esp_codec_dev:
+    component_hash: 1a3a2e518cd8b52e8796ec393a4050977f8f113599056faf085a02a57e194f86
+    dependencies:
+    - name: idf
+      require: private
+      version: '>=4.0'
+    source:
+      registry_url: https://components.espressif.com/
+      type: service
+    version: 1.1.0
   espressif/esp_diag_data_store:
     component_hash: c1e5cf62f545d2b136db299f4df1b228b9840be5bc3410c9ad2d2a882b5c0d64
     dependencies:
@@ -472,8 +482,9 @@ dependencies:
     version: 2.0.4
 direct_dependencies:
 - espressif/arduino-esp32
+- espressif/esp_codec_dev
 - idf
 - rjrp44/vl53l5cx
-manifest_hash: cb9e8ec0a85cd8021153157295c343d816ed234ce5ae6662b12bfcf403337880
+manifest_hash: 39259b7b3dde479a044709d858934ffdc54576159cd449ef3ff12bd3f3d44697
 target: esp32
 version: 2.0.0
