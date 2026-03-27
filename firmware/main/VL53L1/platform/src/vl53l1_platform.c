@@ -12,8 +12,10 @@
 #include <driver/i2c_master.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
+#include "driver/i2c_types.h"
 #include "esp_log_level.h"
 #include "vl53l1_platform.h"
 #include "vl53l1_platform_log.h"
@@ -42,11 +44,9 @@ VL53L1_Error VL53L1_CommsInitialise(VL53L1_Dev_t *pdev, uint8_t comms_type,
   pdev->comms_type = comms_type;
 
   i2c_master_dev_handle_t dev_handle;
-  // Note bus_handle needs a double deref
   ESP_ERROR_CHECK(status = i2c_master_bus_add_device(*pdev->bus_handle,
                                                      &dev_cfg, &dev_handle));
-  pdev->dev_handle =
-      &dev_handle; // WARN: This is going to outlive scope. How do I fix it?
+  pdev->dev_handle = dev_handle;
   return status;
 }
 
@@ -63,9 +63,9 @@ VL53L1_Error VL53L1_WriteMulti(VL53L1_Dev_t *pdev, uint16_t index,
   VL53L1_Error status = 255;
   /* To be filled by customer according to the platform request. Return 0 if OK
    */
-  if (count != (sizeof(pdata) / sizeof(pdata[0]))) {
-    printf("WARN: length of pdata not count");
-  }
+  // if (count != (sizeof(pdata) / sizeof(pdata[0]))) {
+  //   printf("WARN: length of pdata not count");
+  // }
   i2c_master_transmit_multi_buffer_info_t i2c_tx_buff_arr[count];
   for (int i = 0; i < count; i++) {
     i2c_tx_buff_arr[i] = (i2c_master_transmit_multi_buffer_info_t){
@@ -74,7 +74,7 @@ VL53L1_Error VL53L1_WriteMulti(VL53L1_Dev_t *pdev, uint16_t index,
   }
 
   return i2c_master_multi_buffer_transmit(
-      *pdev->dev_handle, i2c_tx_buff_arr,
+      pdev->dev_handle, i2c_tx_buff_arr,
       sizeof(i2c_tx_buff_arr) / sizeof(i2c_master_transmit_multi_buffer_info_t),
       -1);
 }
@@ -84,7 +84,7 @@ VL53L1_Error VL53L1_ReadMulti(VL53L1_Dev_t *pdev, uint16_t index,
   VL53L1_Error status = 255;
   /* To be filled by customer according to the platform request. Return 0 if OK
    */
-  return i2c_master_receive(*pdev->dev_handle, pdata, count, -1);
+  return i2c_master_receive(pdev->dev_handle, pdata, count, -1);
 }
 
 VL53L1_Error VL53L1_WrByte(VL53L1_Dev_t *pdev, uint16_t index,

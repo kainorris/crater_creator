@@ -40,7 +40,7 @@ typedef struct {
   i2c_master_bus_handle_t *bus_handle;
 
   // Automaticaly initalized. User probably shouldn't touch this
-  i2c_master_dev_handle_t *dev_handle;
+  i2c_master_dev_handle_t dev_handle;
 
 } VL53L1_Dev_t;
 
