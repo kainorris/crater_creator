@@ -58,7 +58,6 @@ VL53L1_Error VL53L1_CommsClose(VL53L1_Dev_t *pdev) {
 
 VL53L1_Error VL53L1_WriteMulti(VL53L1_Dev_t *pdev, uint16_t index,
                                uint8_t *pdata, uint32_t count) {
-  NYI();
   // I think index means buffer
   VL53L1_Error status = 255;
   /* To be filled by customer according to the platform request. Return 0 if OK
