@@ -5,6 +5,6 @@ cmake_minimum_required(VERSION 3.5)
 set(__PROJECT_GROUP_LINK_COMPONENTS ON)
 
 
-list(APPEND EXTRA_COMPONENT_DIRS components/VL53L1-ULD-ESP)
+list(APPEND EXTRA_COMPONENT_DIRS components/ESP32-VL53L0X)
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 project(VL53L1-esp-idf)
