@@ -10,7 +10,12 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <unistd.h>
-
+#define X_TRIG_PIN 23
+#define Y_TRIG_PIN 26
+#define Z_TRIG_PIN 33
+#define Y_ECHO_PIN 25
+#define X_ECHO_PIN 22
+#define Z_ECHO_PIN 35
 #define DISTANCE_BETWEEN_SENSORS 10.0f // cm
 
 static const char *TAG = "crater_fw";
@@ -21,6 +26,12 @@ typedef struct {
   float distance_cm;
   int64_t last_updated_us;
 } SensorData;
+
+typedef struct {
+  SensorData *sensor_data_x;
+  SensorData *sensor_data_y;
+  SensorData *sensor_data_z;
+} SensorTaskArgs;
 
 float get_delta_p(float y0, float y1) {
   //|dP| = sqrt( (y1 - y0)^2 + (x1 - x0)^2 )
@@ -146,57 +157,96 @@ void vCalcTask(void *vParams) {
   }
 }
 
+// Note that the sensor task should be monolithic such that it can run
+// sequentaly
 void vSensorTask(void *vParams) {
 
-  int init_result = hcsr04_init(((SensorData *)vParams)->sensor);
-  if (init_result != 0) {
-    // ESP_LOGE(TAG, "Failed to initialize HC-SR04 sensor: %d", init_result);
-    vTaskDelete(NULL);
-    return;
-  }
+  ESP_LOGW(TAG, "x sensor: %d",
+           hcsr04_init(((SensorTaskArgs *)vParams)->sensor_data_x->sensor));
+  ESP_LOGW(TAG, "y sensor: %d",
+           hcsr04_init(((SensorTaskArgs *)vParams)->sensor_data_y->sensor));
+  ESP_LOGW(TAG, "z sensor: %d",
+           hcsr04_init(((SensorTaskArgs *)vParams)->sensor_data_z->sensor));
 
   while (1) {
-    float distance_cm = hcsr04_read_cm(((SensorData *)vParams)->sensor);
-    if (distance_cm < 0) {
-      // ESP_LOGW(TAG, "HC-SR04 out of range");
-    } else {
-      // ESP_LOGI(TAG, "HC-SR04 distance: %.2f cm", distance_cm);
-      while ((((SensorData *)vParams)->xSemaphore == NULL) ||
-             (xSemaphoreTake(((SensorData *)vParams)->xSemaphore,
-                             (TickType_t)10) != pdTRUE)) {
-        // Wait for the semaphore to be available
-        ;
-      }
-      ((SensorData *)vParams)->distance_cm = distance_cm;
-      ((SensorData *)vParams)->last_updated_us = esp_timer_get_time();
-      xSemaphoreGive(
-          ((SensorData *)vParams)->xSemaphore); // Release the semaphore
+    float x =
+        hcsr04_read_cm(((SensorTaskArgs *)vParams)->sensor_data_x->sensor);
+    vTaskDelay(pdMS_TO_TICKS(100));
+    float y =
+        hcsr04_read_cm(((SensorTaskArgs *)vParams)->sensor_data_y->sensor);
+    vTaskDelay(pdMS_TO_TICKS(100));
+    float z =
+        hcsr04_read_cm(((SensorTaskArgs *)vParams)->sensor_data_z->sensor);
+    ESP_LOGI(TAG, "(%f, %f, %f)", x, y, z);
+    // if (distance_cm < 0) {
+    //   // ESP_LOGW(TAG, "HC-SR04 out of range");
+    // } else {
+    //   // ESP_LOGI(TAG, "HC-SR04 distance: %.2f cm", distance_cm);
+    //   while ((((SensorData *)vParams)->xSemaphore == NULL) ||
+    //          (xSemaphoreTake(((SensorData *)vParams)->xSemaphore,
+    //                          (TickType_t)10) != pdTRUE)) {
+    //     // Wait for the semaphore to be available
+    //     ;
+    //   }
+    //   ((SensorData *)vParams)->distance_cm = distance_cm;
+    //   ((SensorData *)vParams)->last_updated_us = esp_timer_get_time();
+    //   xSemaphoreGive(
+    //       ((SensorData *)vParams)->xSemaphore); // Release the semaphore
+    //
+    vTaskDelay(pdMS_TO_TICKS(1000 / 35)); // Read 35 times every second
+  }
+}
 
-      vTaskDelay(pdMS_TO_TICKS(1000 / 35)); // Read 35 times every second
+void vHeartbeatTask(void *vParams) {
+  int num_cycles = 0;
+  for (;;) {
+    num_cycles++;
+    if (num_cycles % 2 == 0) {
+      printf("<3\n");
+    } else {
+      printf(".\n");
     }
+    vTaskDelay(pdMS_TO_TICKS(500));
   }
 }
 
 void app_main(void) {
-  static HCSR04 sensor1 = {.trig_pin = 23, .echo_pin = 18};
-  static HCSR04 sensor2 = {.trig_pin = 25, .echo_pin = 19};
-  static SensorData sensor_data_1 = {.sensor = &sensor1,
+  xTaskCreate(vHeartbeatTask, "heartbeat", 2048, NULL, 5, NULL);
+  static HCSR04 sensor_x = {.trig_pin = X_TRIG_PIN, .echo_pin = X_ECHO_PIN};
+  static HCSR04 sensor_y = {.trig_pin = Y_TRIG_PIN, .echo_pin = Y_ECHO_PIN};
+  static HCSR04 sensor_z = {.trig_pin = Z_TRIG_PIN, .echo_pin = Z_ECHO_PIN};
+
+  static SensorData sensor_data_x = {.sensor = &sensor_x,
                                      .xSemaphore = NULL,
                                      .distance_cm = 0.0f,
                                      .last_updated_us = 0};
-  static SensorData sensor_data_2 = {.sensor = &sensor2,
+
+  static SensorData sensor_data_y = {.sensor = &sensor_y,
                                      .xSemaphore = NULL,
                                      .distance_cm = 0.0f,
                                      .last_updated_us = 0};
-  // ESP_LOGI(TAG, "Crater Creator firmware starting...");
-  sensor_data_1.xSemaphore = xSemaphoreCreateMutex();
-  sensor_data_2.xSemaphore = xSemaphoreCreateMutex();
-  xTaskCreate(vSensorTask, "SensorTask1", 2048, (void *)&sensor_data_1, 5,
+
+  static SensorData sensor_data_z = {.sensor = &sensor_z,
+                                     .xSemaphore = NULL,
+                                     .distance_cm = 0.0f,
+                                     .last_updated_us = 0};
+
+  static SensorTaskArgs sensor_task_args = {.sensor_data_z = &sensor_data_z,
+                                            .sensor_data_y = &sensor_data_y,
+                                            .sensor_data_x = &sensor_data_x};
+
+  sensor_data_x.xSemaphore = xSemaphoreCreateMutex();
+  sensor_data_y.xSemaphore = xSemaphoreCreateMutex();
+  sensor_data_z.xSemaphore = xSemaphoreCreateMutex();
+
+  xTaskCreate(vSensorTask, "SensorTask", 2048, (void *)&sensor_task_args, 5,
               NULL);
-  xTaskCreate(vSensorTask, "SensorTask2", 2048, (void *)&sensor_data_2, 5,
-              NULL);
-  static SensorData *sensor_data_array[2] = {&sensor_data_1, &sensor_data_2};
-  xTaskCreate(vCalcTask, "CalcTask", 2048, (void *)&sensor_data_array, 5, NULL);
+
+  static SensorData *sensor_data_array[3] = {&sensor_data_x, &sensor_data_y,
+                                             &sensor_data_z};
+
+  // xTaskCreate(vCalcTask, "CalcTask", 2048, (void *)&sensor_data_array, 5,
+  // NULL);
   // TODO: Initialize I2C master (GPIO 21/22, 400 kHz)
   // TODO: Initialize VL53L5CX sensor (8x8, 15 Hz)
   // TODO: Run background calibration (CALIBRATION_FRAMES frames)

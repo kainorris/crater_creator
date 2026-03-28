@@ -2,7 +2,7 @@ dependencies:
   idf:
     source:
       type: idf
-    version: 5.5.3
+    version: 6.0.0
   rjrp44/vl53l5cx:
     component_hash: 7aa14a7ed89e95f73efc5003bd1bfd56542f6092418ff1fd1703aec7cc472998
     dependencies:
@@ -17,4 +17,4 @@ direct_dependencies:
 - rjrp44/vl53l5cx
 manifest_hash: 95395cccb33e2d361013711a11d9e51cb421e08729d1ebfd088c8b7939ec45f5
 target: esp32
-version: 2.0.0
+version: 3.0.0

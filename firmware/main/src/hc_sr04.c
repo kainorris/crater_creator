@@ -28,9 +28,9 @@ int hcsr04_init(HCSR04 *sensor) {
 
 // Blocks and measures distance in centimeters. Returns -1.0 if out of range.
 float hcsr04_read_cm(HCSR04 *sensor) {
-  uint32_t t1;
-  uint32_t t2;
-  uint32_t pulse_width;
+  int32_t t1;
+  int32_t t2;
+  int32_t pulse_width;
 
   // Hold the trigger pin high for at least 10 us
   gpio_set_level(sensor->trig_pin, 1);
@@ -40,10 +40,10 @@ float hcsr04_read_cm(HCSR04 *sensor) {
   // Wait for pulse on echo pin
   int64_t wait_start = esp_timer_get_time();
   while (gpio_get_level(sensor->echo_pin) == 0) {
-    if (esp_timer_get_time() - wait_start > 10000) {
-      // Timeout waiting for echo to go high
-      return -1.0f;
-    }
+    // if (esp_timer_get_time() - wait_start > 10000) {
+    //   // Timeout waiting for echo to go high
+    //   return -1.0f;
+    // }
   }
 
   // Measure how long the echo pin was held high (pulse width)
