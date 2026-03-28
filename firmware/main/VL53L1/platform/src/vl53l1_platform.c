@@ -65,7 +65,10 @@ VL53L1_Error VL53L1_WriteMulti(VL53L1_Dev_t *pdev, uint16_t index,
   // if (count != (sizeof(pdata) / sizeof(pdata[0]))) {
   //   printf("WARN: length of pdata not count");
   // }
-  i2c_master_transmit_multi_buffer_info_t i2c_tx_buff_arr[count];
+  i2c_master_transmit(i2c_master_dev_handle_t i2c_dev,
+                      const uint8_t *write_buffer, size_t write_size,
+                      int xfer_timeout_ms)
+      i2c_master_transmit_multi_buffer_info_t i2c_tx_buff_arr[count];
   for (int i = 0; i < count; i++) {
     i2c_tx_buff_arr[i] = (i2c_master_transmit_multi_buffer_info_t){
         .buffer_size = sizeof(uint8_t), // idek vibes
