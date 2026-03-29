@@ -40,10 +40,10 @@ float hcsr04_read_cm(HCSR04 *sensor) {
   // Wait for pulse on echo pin
   int64_t wait_start = esp_timer_get_time();
   while (gpio_get_level(sensor->echo_pin) == 0) {
-    // if (esp_timer_get_time() - wait_start > 10000) {
-    //   // Timeout waiting for echo to go high
-    //   return -1.0f;
-    // }
+    if (esp_timer_get_time() - wait_start > 10000) {
+      // Timeout waiting for echo to go high
+      return -1.0f;
+    }
   }
 
   // Measure how long the echo pin was held high (pulse width)
