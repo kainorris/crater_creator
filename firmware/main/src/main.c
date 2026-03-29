@@ -1,6 +1,7 @@
 #include "esp_log.h"
 #include "esp_timer.h"
 #include "freertos/FreeRTOS.h"
+#include "freertos/idf_additions.h"
 #include "freertos/projdefs.h"
 #include "freertos/task.h"
 #include "hc_sr04.h"
@@ -11,14 +12,20 @@
 #include <stdio.h>
 #include <unistd.h>
 #define X_TRIG_PIN 23
-#define Y_TRIG_PIN 26
-#define Z_TRIG_PIN 33
-#define Y_ECHO_PIN 25
-#define X_ECHO_PIN 22
+#define Y_TRIG_PIN 22
+#define Z_TRIG_PIN 21
+#define Y_ECHO_PIN 33
+#define X_ECHO_PIN 32
 #define Z_ECHO_PIN 35
 #define DISTANCE_BETWEEN_SENSORS 10.0f // cm
 
 static const char *TAG = "crater_fw";
+
+typedef struct {
+  float x;
+  float y;
+  float z;
+} Point;
 
 typedef struct {
   HCSR04 *sensor;
@@ -36,6 +43,29 @@ typedef struct {
 float get_delta_p(float y0, float y1) {
   //|dP| = sqrt( (y1 - y0)^2 + (x1 - x0)^2 )
   return sqrtf(powf((y1 - y0), 2) + powf(DISTANCE_BETWEEN_SENSORS, 2));
+}
+
+float get_velocity(Point p_i, Point p_f, uint32_t t_i, uint32_t t_f) {
+  return sqrtf((powf(p_f.x - p_i.x, 2.0) + powf(p_f.y - p_i.y, 2.0) +
+                powf(p_f.z - p_i.z, 2.0)) /
+               ((float)(t_f - t_i)));
+}
+
+Point get_velocity_vector(Point p_i, Point p_f, uint32_t t_i, uint32_t t_f) {
+  return (Point){.x = (p_f.x - p_i.x) / (t_f - t_i),
+                 .y = (p_f.y - p_i.y) / (t_f - t_i),
+                 .z = (p_f.z - p_i.z) / (t_f - t_i)};
+}
+
+Point euler_method(Point prev, float step, Point deriv) {
+  Point guard = prev;
+  while (prev.z > 0.1 && prev.z < guard.z) {
+    prev = (Point){
+        .x = prev.x + deriv.x * step,
+        .y = prev.y + deriv.y * step,
+        .z = prev.z + deriv.z * step,
+    };
+  }
 }
 
 void vCalcTask(void *vParams) {
@@ -171,28 +201,45 @@ void vSensorTask(void *vParams) {
   while (1) {
     float x =
         hcsr04_read_cm(((SensorTaskArgs *)vParams)->sensor_data_x->sensor);
-    vTaskDelay(pdMS_TO_TICKS(100));
+    vTaskDelay(pdMS_TO_TICKS(200));
     float y =
         hcsr04_read_cm(((SensorTaskArgs *)vParams)->sensor_data_y->sensor);
-    vTaskDelay(pdMS_TO_TICKS(100));
+    vTaskDelay(pdMS_TO_TICKS(200));
     float z =
         hcsr04_read_cm(((SensorTaskArgs *)vParams)->sensor_data_z->sensor);
+    vTaskDelay(pdMS_TO_TICKS(200));
     ESP_LOGI(TAG, "(%f, %f, %f)", x, y, z);
-    // if (distance_cm < 0) {
-    //   // ESP_LOGW(TAG, "HC-SR04 out of range");
-    // } else {
-    //   // ESP_LOGI(TAG, "HC-SR04 distance: %.2f cm", distance_cm);
-    //   while ((((SensorData *)vParams)->xSemaphore == NULL) ||
-    //          (xSemaphoreTake(((SensorData *)vParams)->xSemaphore,
-    //                          (TickType_t)10) != pdTRUE)) {
-    //     // Wait for the semaphore to be available
-    //     ;
-    //   }
-    //   ((SensorData *)vParams)->distance_cm = distance_cm;
-    //   ((SensorData *)vParams)->last_updated_us = esp_timer_get_time();
-    //   xSemaphoreGive(
-    //       ((SensorData *)vParams)->xSemaphore); // Release the semaphore
-    //
+    while (
+        (((SensorTaskArgs *)vParams)->sensor_data_z->xSemaphore == NULL) ||
+        (xSemaphoreTake(((SensorTaskArgs *)vParams)->sensor_data_z->xSemaphore,
+                        (TickType_t)10) != pdTRUE)) {
+      // Spinlock for the semaphore to be available
+      ;
+    }
+    ((SensorTaskArgs *)vParams)->sensor_data_z->distance_cm = z;
+
+    while (
+        (((SensorTaskArgs *)vParams)->sensor_data_y->xSemaphore == NULL) ||
+        (xSemaphoreTake(((SensorTaskArgs *)vParams)->sensor_data_y->xSemaphore,
+                        (TickType_t)10) != pdTRUE)) {
+      // Spinlock for the semaphore to be available
+      ;
+    }
+    ((SensorTaskArgs *)vParams)->sensor_data_y->distance_cm = y;
+
+    while (
+        (((SensorTaskArgs *)vParams)->sensor_data_x->xSemaphore == NULL) ||
+        (xSemaphoreTake(((SensorTaskArgs *)vParams)->sensor_data_x->xSemaphore,
+                        (TickType_t)10) != pdTRUE)) {
+      // Spinlock for the semaphore to be available
+      ;
+    }
+    ((SensorTaskArgs *)vParams)->sensor_data_x->distance_cm = x;
+
+    xSemaphoreGive(((SensorTaskArgs *)vParams)->sensor_data_x->xSemaphore);
+    xSemaphoreGive(((SensorTaskArgs *)vParams)->sensor_data_y->xSemaphore);
+    xSemaphoreGive(((SensorTaskArgs *)vParams)->sensor_data_z->xSemaphore);
+
     vTaskDelay(pdMS_TO_TICKS(1000 / 35)); // Read 35 times every second
   }
 }
