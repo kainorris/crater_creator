@@ -1,5 +1,6 @@
 
 #include "hc_sr04.h"
+#include "esp_log.h"
 
 // Anything over 400 cm (23200 us pulse) is "out of range"
 #define HCSR04_MAX_DIST_US 23200
@@ -51,7 +52,7 @@ float hcsr04_read_cm(HCSR04 *sensor) {
   while (gpio_get_level(sensor->echo_pin) == 1) {
     if (esp_timer_get_time() - t1 > HCSR04_MAX_DIST_US) {
       // Timeout, exceeded max distance
-      return -1.0f;
+      return -2.0f;
     }
   }
   t2 = esp_timer_get_time();
