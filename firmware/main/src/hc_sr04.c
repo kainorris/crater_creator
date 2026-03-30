@@ -1,5 +1,6 @@
 
 #include "hc_sr04.h"
+#include "esp_dsp.h"
 #include "esp_log.h"
 
 // Anything over 400 cm (23200 us pulse) is "out of range"
