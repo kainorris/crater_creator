@@ -21,6 +21,7 @@ PX_PER_MILE = (MAP_W - (MAP_MARGIN * 2)) / USA_WIDTH_MILES
 
 # Colors
 GOLD = (218, 165, 32)
+RED = (255, 0, 0)
 WHITE = (255, 255, 255)
 CYAN = (0, 180, 220)
 SPACE_BLACK = (8, 8, 15)
@@ -57,14 +58,20 @@ class CraterCreator:
         self.impact_pos = (MAP_W // 2, TOP_BAR_H + (MAP_H // 2))
         self.leaderboard = []
         self.flash_alpha = 0
+        self.desktop_mode = False
 
         # Serial connection to ESP32
-        self.ser = serial.Serial("/dev/ttyUSB0", 115200, timeout=0)
+        try:
+            print("here")
+            self.ser = serial.Serial("/dev/ttyUSB0", 115200, timeout=10)
+        except serial.SerialException:
+            print("here")
+            self.desktop_mode = True
 
     def calculate_crater(self, sensor_vel):
-        if sensor_vel < 0.1:
-            return 0
-        simulated_kms = sensor_vel * 6.0
+        # if sensor_vel < 0.1:
+        #     return 0
+        simulated_kms = sensor_vel * 60.0
         # Equation Gemini made for me to scale realistically
         return round(20 + (math.log10(simulated_kms + 1) * 160), 2)
 
@@ -86,6 +93,10 @@ class CraterCreator:
 
         # Top Bar (Mission Control)
         title = self.font_header.render("ORBITAL IMPACT COMMAND", True, GOLD)
+        if self.desktop_mode:
+            title = self.font_header.render(
+                "!!!DEBUG MODE!!! ORBITAL IMPACT COMMAND", True, RED
+            )
         self.canvas.blit(title, (50, 20))
 
         stats = [
@@ -117,7 +128,7 @@ class CraterCreator:
             else:
                 color = (60, 60, 75)
 
-            txt = self.font_data_lbl.render(f"{val} km", True, color)
+            txt = self.font_data_lbl.render(f"{i + 1}. {val} km", True, color)
             self.canvas.blit(txt, (MAP_W + 60, TOP_BAR_H + 160 + i * 95))
 
         # Crater Visual
@@ -129,6 +140,9 @@ class CraterCreator:
             self.canvas.blit(overlay, (0, 0))
 
     def run(self):
+        x_pos = 0.0
+        y_pos = 0.0
+        vel = 0.0
         while True:
             for event in pygame.event.get():
                 # Handle memory leak stuff my guide told me to do
@@ -139,31 +153,38 @@ class CraterCreator:
                     return
 
             # Read serial data from ESP32
-            if self.ser.in_waiting:
+            print(f"{self.desktop_mode=}")
+            if not self.desktop_mode and self.ser.in_waiting:
                 line = self.ser.readline().decode("utf-8", errors="ignore").strip()
+                print(line)
+
                 if line.startswith("V@E#F:"):
                     try:
                         vel = float(line[6:])
-                        self.sensor_vel = round(vel, 2)
-                        self.asteroid_vel = self.sensor_vel * 5.8
-                        self.crater_miles = self.calculate_crater(self.sensor_vel)
 
-                        # Generate random target (Change if we do the yz matrix stuff Asher was talking about)
-                        self.impact_pos = (
-                            random.randint(MAP_MARGIN + 200, MAP_W - MAP_MARGIN - 200),
-                            random.randint(
-                                TOP_BAR_H + MAP_MARGIN + 200, VIRTUAL_H - MAP_MARGIN - 200
-                            ),
-                        )
-
-                        # Add to leaderboard if necessary and set flash to occur
-                        self.leaderboard.append({"vel": self.crater_miles})
-                        self.leaderboard = sorted(
-                            self.leaderboard, key=lambda x: x["vel"], reverse=True
-                        )[:10]
-                        self.flash_alpha = 180
                     except ValueError:
                         pass
+                elif line.startswith("X@E#F:"):
+                    x_pos = float(line[6:])
+                elif line.startswith("Y@E#F:"):
+                    y_pos = float(
+                        line[6:]
+                    )  # Generate random target (Change if we do the yz matrix stuff Asher was talking about)
+                    print(f"{x_pos=},{y_pos=},{vel=}")
+                    self.sensor_vel = round(vel, 2)
+                    self.asteroid_vel = self.sensor_vel * 5.8
+                    self.crater_miles = self.calculate_crater(self.sensor_vel)
+
+                    # Add to leaderboard if necessary and set flash to occur
+                    self.leaderboard.append({"vel": self.crater_miles})
+                    self.leaderboard = sorted(
+                        self.leaderboard, key=lambda x: x["vel"], reverse=True
+                    )[:10]
+                    self.flash_alpha = 180
+                    self.impact_pos = (
+                        MAP_MARGIN + (x_pos / 100.0) * (MAP_W - 2 * MAP_MARGIN),
+                        TOP_BAR_H + MAP_MARGIN + (y_pos / 100.0) * (MAP_H - 2 * MAP_MARGIN),
+                    )
 
             # Update the screen and frame settings
             self.draw_canvas()

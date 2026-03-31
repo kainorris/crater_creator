@@ -11,13 +11,14 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <unistd.h>
-#define X_TRIG_PIN 23
-#define Y_TRIG_PIN 22
-#define Z_TRIG_PIN 21
-#define Y_ECHO_PIN 33
-#define X_ECHO_PIN 32
-#define Z_ECHO_PIN 35
+#define X_TRIG_PIN 19                  //
+#define Y_TRIG_PIN 22                  //
+#define Z_TRIG_PIN 25                  //
+#define Y_ECHO_PIN 23                  //
+#define X_ECHO_PIN 21                  //
+#define Z_ECHO_PIN 18                  //
 #define DISTANCE_BETWEEN_SENSORS 10.0f // cm
+#define USE_Z_SENSOR 0
 #define NONOP(...)
 
 static const char *TAG = "crater_fw";
@@ -83,7 +84,11 @@ Point euler_method(Point prev, float step, Point deriv) {
         deriv.z);
   Point guard = prev;
   int iteration = 0;
+#if USE_Z_SENSOR
   while (prev.z > 0.1 && prev.z < guard.z) {
+#else
+  while (prev.y > 0.1 && prev.y < guard.y) {
+#endif
     prev = (Point){
         .x = prev.x + deriv.x * step,
         .y = prev.y + deriv.y * step,
@@ -150,6 +155,7 @@ void vCalcTask(void *vParams) {
         {
           // rolling average:
           //(old_average * (n-1) + new_value) / n
+#if USE_Z_SENSOR
           if (((SensorTaskArgs *)vParams)->sensor_data_z->xSemaphore != NULL &&
               xSemaphoreTake(
                   ((SensorTaskArgs *)vParams)->sensor_data_z->xSemaphore,
@@ -166,6 +172,7 @@ void vCalcTask(void *vParams) {
           } else {
             NONOP(TAG, "vCalcTask: calibration Z: failed to take semaphore");
           }
+#endif
           if (((SensorTaskArgs *)vParams)->sensor_data_y->xSemaphore != NULL &&
               xSemaphoreTake(
                   ((SensorTaskArgs *)vParams)->sensor_data_y->xSemaphore,
@@ -231,6 +238,7 @@ void vCalcTask(void *vParams) {
         NONOP(TAG, "vCalcTask: NO_PROJ Y: failed to take semaphore");
       }
 
+#if USE_Z_SENSOR
       if (((SensorTaskArgs *)vParams)->sensor_data_z->xSemaphore != NULL &&
           xSemaphoreTake(((SensorTaskArgs *)vParams)->sensor_data_z->xSemaphore,
                          (TickType_t)10) == pdTRUE) {
@@ -245,6 +253,7 @@ void vCalcTask(void *vParams) {
       } else {
         NONOP(TAG, "vCalcTask: NO_PROJ Z: failed to take semaphore");
       }
+#endif
 
       if (((SensorTaskArgs *)vParams)->sensor_data_x->xSemaphore != NULL &&
           xSemaphoreTake(((SensorTaskArgs *)vParams)->sensor_data_x->xSemaphore,
@@ -261,25 +270,31 @@ void vCalcTask(void *vParams) {
         NONOP(TAG, "vCalcTask: NO_PROJ X: failed to take semaphore");
       }
 
+#if USE_Z_SENSOR
       if (dist_x > 0.0 && dist_y > 0.0 && dist_z > 0.0) {
         first_sensor_pos = (Point){.x = dist_x, .y = dist_y, .z = dist_z};
+#else
+      if (dist_x > 0.0 && dist_y > 0.0) {
+        first_sensor_pos = (Point){.x = dist_x, .y = dist_y, .z = 0};
+#endif
         first_sensor_time = esp_timer_get_time();
-        ESP_LOGI(
+        NONOP(
             TAG,
             "vCalcTask: PROJECTILE DETECTED! pos=(%.4f, %.4f, %.4f), time=%lld",
             dist_x, dist_y, dist_z, first_sensor_time);
         calc_state = OBJECT_IN_FRAME;
       } else {
-        ESP_LOGI(TAG,
-                 "vCalcTask: NO_PROJ: not all axes triggered (x=%.4f, y=%.4f, "
-                 "z=%.4f)",
-                 dist_x, dist_y, dist_z);
+        NONOP(TAG,
+              "vCalcTask: NO_PROJ: not all axes triggered (x=%.4f, y=%.4f, "
+              "z=%.4f)",
+              dist_x, dist_y, dist_z);
       }
 
       break;
     case OBJECT_IN_FRAME:
-      ESP_LOGI(TAG, "vCalcTask: OBJECT_IN_FRAME state");
+      NONOP(TAG, "vCalcTask: OBJECT_IN_FRAME state");
       Point current = (Point){0, 0, 0};
+#if USE_Z_SENSOR
       if (((SensorTaskArgs *)vParams)->sensor_data_z->xSemaphore != NULL &&
           xSemaphoreTake(((SensorTaskArgs *)vParams)->sensor_data_z->xSemaphore,
                          (TickType_t)10) == pdTRUE) {
@@ -289,6 +304,7 @@ void vCalcTask(void *vParams) {
       } else {
         NONOP(TAG, "vCalcTask: OIF Z: failed to take semaphore");
       }
+#endif
       if (((SensorTaskArgs *)vParams)->sensor_data_y->xSemaphore != NULL &&
           xSemaphoreTake(((SensorTaskArgs *)vParams)->sensor_data_y->xSemaphore,
                          (TickType_t)10) == pdTRUE) {
@@ -312,9 +328,14 @@ void vCalcTask(void *vParams) {
             current.y, current.z);
 
       // If this case is met, there is no longer an object in frame
+#if USE_Z_SENSOR
       if (current.x > envelope.x.distance_cm * 0.95 &&
           current.y > envelope.y.distance_cm * 0.95 &&
           current.z > envelope.z.distance_cm * 0.95) {
+#else
+      if (current.x > envelope.x.distance_cm * 0.95 &&
+          current.y > envelope.y.distance_cm * 0.95) {
+#endif
         NONOP(TAG, "vCalcTask: object LEFT frame, computing velocity and "
                    "trajectory");
         float vel = get_velocity(first_sensor_pos, current, first_sensor_time,
@@ -379,10 +400,12 @@ void vSensorTask(void *vParams) {
         Y_TRIG_PIN, Y_ECHO_PIN);
   ESP_LOGW(TAG, "y sensor: %d",
            hcsr04_init(((SensorTaskArgs *)vParams)->sensor_data_y->sensor));
+#if USE_Z_SENSOR
   NONOP(TAG, "vSensorTask: initializing Z sensor (trig=%d, echo=%d)",
         Z_TRIG_PIN, Z_ECHO_PIN);
   ESP_LOGW(TAG, "z sensor: %d",
            hcsr04_init(((SensorTaskArgs *)vParams)->sensor_data_z->sensor));
+#endif
   NONOP(TAG, "vSensorTask: all sensors initialized, entering read loop");
 
   int read_cycle = 0;
@@ -402,14 +425,21 @@ void vSensorTask(void *vParams) {
     NONOP(TAG, "vSensorTask: Y raw=%.4f cm", y);
     vTaskDelay(pdMS_TO_TICKS(20));
 
+#if USE_Z_SENSOR
     NONOP(TAG, "vSensorTask: reading Z sensor...");
     float z =
         hcsr04_read_cm(((SensorTaskArgs *)vParams)->sensor_data_z->sensor);
     NONOP(TAG, "vSensorTask: Z raw=%.4f cm", z);
     vTaskDelay(pdMS_TO_TICKS(20));
+#endif
 
+#if USE_Z_SENSOR
     NONOP(TAG, "vSensorTask: readings: (%f, %f, %f)", x, y, z);
+#else
+    NONOP(TAG, "vSensorTask: readings: (%f, %f)", x, y);
+#endif
 
+#if USE_Z_SENSOR
     NONOP(TAG, "vSensorTask: acquiring Z semaphore...");
     while (
         (((SensorTaskArgs *)vParams)->sensor_data_z->xSemaphore == NULL) ||
@@ -420,6 +450,7 @@ void vSensorTask(void *vParams) {
     }
     ((SensorTaskArgs *)vParams)->sensor_data_z->distance_cm = z;
     NONOP(TAG, "vSensorTask: Z semaphore acquired, wrote z=%.4f", z);
+#endif
 
     NONOP(TAG, "vSensorTask: acquiring Y semaphore...");
     while (
@@ -445,7 +476,9 @@ void vSensorTask(void *vParams) {
 
     xSemaphoreGive(((SensorTaskArgs *)vParams)->sensor_data_x->xSemaphore);
     xSemaphoreGive(((SensorTaskArgs *)vParams)->sensor_data_y->xSemaphore);
+#if USE_Z_SENSOR
     xSemaphoreGive(((SensorTaskArgs *)vParams)->sensor_data_z->xSemaphore);
+#endif
     NONOP(TAG, "vSensorTask: all semaphores released");
 
     vTaskDelay(pdMS_TO_TICKS(1000 / 35)); // Read 35 times every second
@@ -479,10 +512,14 @@ void app_main(void) {
   NONOP(TAG, "app_main: configuring sensors");
   NONOP(TAG, "app_main: sensor X: trig=%d, echo=%d", X_TRIG_PIN, X_ECHO_PIN);
   NONOP(TAG, "app_main: sensor Y: trig=%d, echo=%d", Y_TRIG_PIN, Y_ECHO_PIN);
+#if USE_Z_SENSOR
   NONOP(TAG, "app_main: sensor Z: trig=%d, echo=%d", Z_TRIG_PIN, Z_ECHO_PIN);
+#endif
   static HCSR04 sensor_x = {.trig_pin = X_TRIG_PIN, .echo_pin = X_ECHO_PIN};
   static HCSR04 sensor_y = {.trig_pin = Y_TRIG_PIN, .echo_pin = Y_ECHO_PIN};
+#if USE_Z_SENSOR
   static HCSR04 sensor_z = {.trig_pin = Z_TRIG_PIN, .echo_pin = Z_ECHO_PIN};
+#endif
 
   NONOP(TAG, "app_main: initializing sensor data structs");
   static SensorData sensor_data_x = {.sensor = &sensor_x,
@@ -495,25 +532,37 @@ void app_main(void) {
                                      .distance_cm = 0.0f,
                                      .last_updated_us = 0};
 
+#if USE_Z_SENSOR
   static SensorData sensor_data_z = {.sensor = &sensor_z,
                                      .xSemaphore = NULL,
                                      .distance_cm = 0.0f,
                                      .last_updated_us = 0};
+#endif
 
-  static SensorTaskArgs sensor_task_args = {.sensor_data_z = &sensor_data_z,
-                                            .sensor_data_y = &sensor_data_y,
-                                            .sensor_data_x = &sensor_data_x};
+  static SensorTaskArgs sensor_task_args = {
+#if USE_Z_SENSOR
+      .sensor_data_z = &sensor_data_z,
+#else
+      .sensor_data_z = NULL,
+#endif
+      .sensor_data_y = &sensor_data_y,
+      .sensor_data_x = &sensor_data_x};
 
   NONOP(TAG, "app_main: creating mutexes");
   sensor_data_x.xSemaphore = xSemaphoreCreateMutex();
   NONOP(TAG, "app_main: X mutex created: %p", (void *)sensor_data_x.xSemaphore);
   sensor_data_y.xSemaphore = xSemaphoreCreateMutex();
   NONOP(TAG, "app_main: Y mutex created: %p", (void *)sensor_data_y.xSemaphore);
+#if USE_Z_SENSOR
   sensor_data_z.xSemaphore = xSemaphoreCreateMutex();
   NONOP(TAG, "app_main: Z mutex created: %p", (void *)sensor_data_z.xSemaphore);
+#endif
 
-  if (!sensor_data_x.xSemaphore || !sensor_data_y.xSemaphore ||
-      !sensor_data_z.xSemaphore) {
+  if (!sensor_data_x.xSemaphore || !sensor_data_y.xSemaphore
+#if USE_Z_SENSOR
+      || !sensor_data_z.xSemaphore
+#endif
+  ) {
     ESP_LOGE(TAG, "app_main: FATAL - failed to create one or more mutexes!");
   }
 
@@ -521,8 +570,12 @@ void app_main(void) {
   xTaskCreate(vSensorTask, "SensorTask", 2048, (void *)&sensor_task_args, 5,
               NULL);
 
+#if USE_Z_SENSOR
   static SensorData *sensor_data_array[3] = {&sensor_data_x, &sensor_data_y,
                                              &sensor_data_z};
+#else
+  static SensorData *sensor_data_array[2] = {&sensor_data_x, &sensor_data_y};
+#endif
 
   NONOP(TAG, "app_main: creating CalcTask (stack=2048, priority=5)");
   xTaskCreate(vCalcTask, "CalcTask", 2048 * 5, (void *)&sensor_task_args, 5,
