@@ -1,37 +1,13 @@
 Executing action: all (aliases: build)
 Running ninja in directory /home/laptop-main/uni/cornerstone/prog/crater_creator/firmware/build
 Executing "ninja all"...
-[1/9] Performing build step for 'bootloader'
+[1/4] cd /home/laptop-main/uni/cornerstone/prog/crater_creator/firmware/build && /home/laptop-main/.espressif/python_env/idf6.0_py3.14_env/bin/python /opt/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 partition --type app /home/laptop-main/uni/cornerstone/prog/crater_creator/firmware/build/partition_table/partition-table.bin /home/laptop-main/uni/cornerstone/prog/crater_creator/firmware/build/crater_creator_firmware.bin
+crater_creator_firmware.bin binary size 0x2c950 bytes. Smallest app partition is 0x100000 bytes. 0xd36b0 bytes (83%) free.
+[2/4] Performing build step for 'bootloader'
 [1/1] cd /home/laptop-main/uni/cornerstone/prog/crater_creator/firmware/build/bootloader && /home/laptop-main/.espressif/python_env/idf6.0_py3.14_env/bin/python /opt/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 bootloader 0x1000 /home/laptop-main/uni/cornerstone/prog/crater_creator/firmware/build/bootloader/bootloader.bin
 Bootloader binary size 0x6610 bytes. 0x9f0 bytes (9%) free.
-[2/9] No install step for 'bootloader'
-[3/9] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/src/main.c.obj
-/home/laptop-main/uni/cornerstone/prog/crater_creator/firmware/main/src/main.c: In function 'vCalcTask':
-/home/laptop-main/uni/cornerstone/prog/crater_creator/firmware/main/src/main.c:225:13: warning: unused variable 'dist_z' [-Wunused-variable]
-  225 |       float dist_z = 0.0;
-      |             ^~~~~~
-/home/laptop-main/uni/cornerstone/prog/crater_creator/firmware/main/src/main.c:139:7: warning: unused variable 'sleep_time0' [-Wunused-variable]
-  139 |   int sleep_time0 = esp_timer_get_time();
-      |       ^~~~~~~~~~~
-/home/laptop-main/uni/cornerstone/prog/crater_creator/firmware/main/src/main.c:137:9: warning: variable 'prev' set but not used [-Wunused-but-set-variable]
-  137 |   Point prev;
-      |         ^~~~
-/home/laptop-main/uni/cornerstone/prog/crater_creator/firmware/main/src/main.c: In function 'app_main':
-/home/laptop-main/uni/cornerstone/prog/crater_creator/firmware/main/src/main.c:577:22: warning: unused variable 'sensor_data_array' [-Wunused-variable]
-  577 |   static SensorData *sensor_data_array[2] = {&sensor_data_x, &sensor_data_y};
-      |                      ^~~~~~~~~~~~~~~~~
-[4/9] Completed 'bootloader'
-[5/9] Linking C static library esp-idf/main/libmain.a
-[6/9] Generating esp-idf/esp_system/ld/sections.ld
-[7/9] Linking CXX executable crater_creator_firmware.elf
-[8/9] Generating binary image from built executable
-esptool v5.2.0
-Creating ESP32 image...
-Merged 2 ELF sections.
-Successfully created ESP32 image.
-Generated /home/laptop-main/uni/cornerstone/prog/crater_creator/firmware/build/crater_creator_firmware.bin
-[9/9] cd /home/laptop-main/uni/cornerstone/prog/crater_creator/firmware/build && /home/laptop-main/.espressif/python_env/idf6.0_py3.14_env/bin/python /opt/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 partition --type app /home/laptop-main/uni/cornerstone/prog/crater_creator/firmware/build/partition_table/partition-table.bin /home/laptop-main/uni/cornerstone/prog/crater_creator/firmware/build/crater_creator_firmware.bin
-crater_creator_firmware.bin binary size 0x2aa10 bytes. Smallest app partition is 0x100000 bytes. 0xd55f0 bytes (83%) free.
+[3/4] No install step for 'bootloader'
+[4/4] Completed 'bootloader'
 Executing action: flash
 Serial port /dev/ttyUSB0:
 Connecting.....
@@ -39,7 +15,7 @@ Detecting chip type... ESP32
 Running ninja in directory /home/laptop-main/uni/cornerstone/prog/crater_creator/firmware/build
 Executing "ninja flash"...
 [1/5] cd /home/laptop-main/uni/cornerstone/prog/crater_creator/firmware/build && /home/laptop-main/.espressif/python_env/idf6.0_py3.14_env/bin/python /opt/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 partition --type app /home/laptop-main/uni/cornerstone/prog/crater_creator/firmware/build/partition_table/partition-table.bin /home/laptop-main/uni/cornerstone/prog/crater_creator/firmware/build/crater_creator_firmware.bin
-crater_creator_firmware.bin binary size 0x2aa10 bytes. Smallest app partition is 0x100000 bytes. 0xd55f0 bytes (83%) free.
+crater_creator_firmware.bin binary size 0x2c950 bytes. Smallest app partition is 0x100000 bytes. 0xd36b0 bytes (83%) free.
 [2/5] Performing build step for 'bootloader'
 [1/1] cd /home/laptop-main/uni/cornerstone/prog/crater_creator/firmware/build/bootloader && /home/laptop-main/.espressif/python_env/idf6.0_py3.14_env/bin/python /opt/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 bootloader 0x1000 /home/laptop-main/uni/cornerstone/prog/crater_creator/firmware/build/bootloader/bootloader.bin
 Bootloader binary size 0x6610 bytes. 0x9f0 bytes (9%) free.
@@ -49,7 +25,7 @@ Bootloader binary size 0x6610 bytes. 0x9f0 bytes (9%) free.
 esptool --chip esp32 -p /dev/ttyUSB0 -b 460800 --before=default-reset --after=hard-reset write-flash --flash-mode dio --flash-freq 40m --flash-size 4MB 0x1000 bootloader/bootloader.bin 0x8000 partition_table/partition-table.bin 0x10000 crater_creator_firmware.bin
 esptool v5.2.0
 Serial port /dev/ttyUSB0:
-Connecting.....
+Connecting....
 Connected to ESP32 on /dev/ttyUSB0:
 Chip type:          ESP32-D0WD-V3 (revision v3.1)
 Features:           Wi-Fi, BT, Dual Core + LP Core, 240MHz, Vref calibration in eFuse, Coding Scheme None
@@ -69,27 +45,27 @@ Compressed 26128 bytes to 16571...
 Writing at 0x00001000 [                              ]   0.0% 0/16571 bytes... 
 Writing at 0x00007518 [============================> ]  98.9% 16384/16571 bytes... 
 Writing at 0x00007610 [==============================] 100.0% 16571/16571 bytes... 
-Wrote 26128 bytes (16571 compressed) at 0x00001000 in 0.5 seconds (387.5 kbit/s).
+Wrote 26128 bytes (16571 compressed) at 0x00001000 in 0.5 seconds (385.6 kbit/s).
 Verifying written data...
 Hash of data verified.
 Flash will be erased from 0x00008000 to 0x00008fff...
 Compressed 3072 bytes to 103...
 Writing at 0x00008000 [                              ]   0.0% 0/103 bytes... 
 Writing at 0x00008c00 [==============================] 100.0% 103/103 bytes... 
-Wrote 3072 bytes (103 compressed) at 0x00008000 in 0.0 seconds (1396.4 kbit/s).
+Wrote 3072 bytes (103 compressed) at 0x00008000 in 0.0 seconds (1360.5 kbit/s).
 Verifying written data...
 Hash of data verified.
-Flash will be erased from 0x00010000 to 0x0003afff...
-Compressed 174608 bytes to 98865...
-Writing at 0x00010000 [                              ]   0.0% 0/98865 bytes... 
-Writing at 0x0001c803 [===>                          ]  16.6% 16384/98865 bytes... 
-Writing at 0x0002240b [========>                     ]  33.1% 32768/98865 bytes... 
-Writing at 0x00027fd3 [=============>                ]  49.7% 49152/98865 bytes... 
-Writing at 0x0002e58f [==================>           ]  66.3% 65536/98865 bytes... 
-Writing at 0x0003438e [=======================>      ]  82.9% 81920/98865 bytes... 
-Writing at 0x0003a739 [============================> ]  99.4% 98304/98865 bytes... 
-Writing at 0x0003aa10 [==============================] 100.0% 98865/98865 bytes... 
-Wrote 174608 bytes (98865 compressed) at 0x00010000 in 2.5 seconds (566.0 kbit/s).
+Flash will be erased from 0x00010000 to 0x0003cfff...
+Compressed 182608 bytes to 101743...
+Writing at 0x00010000 [                              ]   0.0% 0/101743 bytes... 
+Writing at 0x0001d1ea [===>                          ]  16.1% 16384/101743 bytes... 
+Writing at 0x0002306c [========>                     ]  32.2% 32768/101743 bytes... 
+Writing at 0x00028f2d [=============>                ]  48.3% 49152/101743 bytes... 
+Writing at 0x0002f322 [==================>           ]  64.4% 65536/101743 bytes... 
+Writing at 0x000352d8 [=======================>      ]  80.5% 81920/101743 bytes... 
+Writing at 0x0003b1e9 [===========================>  ]  96.6% 98304/101743 bytes... 
+Writing at 0x0003c950 [==============================] 100.0% 101743/101743 bytes... 
+Wrote 182608 bytes (101743 compressed) at 0x00010000 in 2.6 seconds (564.7 kbit/s).
 Verifying written data...
 Hash of data verified.
 
@@ -99,7 +75,8 @@ Hard resetting via RTS pin...
 Executing action: monitor
 Running idf_monitor in directory /home/laptop-main/uni/cornerstone/prog/crater_creator/firmware
 Executing "/home/laptop-main/.espressif/python_env/idf6.0_py3.14_env/bin/python /opt/esp-idf/tools/idf_monitor.py -p /dev/ttyUSB0 -b 115200 --toolchain-prefix xtensa-esp32-elf- --target esp32 --revision 0 /home/laptop-main/uni/cornerstone/prog/crater_creator/firmware/build/crater_creator_firmware.elf /home/laptop-main/uni/cornerstone/prog/crater_creator/firmware/build/VL53L1-esp-idf.elf /home/laptop-main/uni/cornerstone/prog/crater_creator/firmware/build/bootloader/bootloader.elf -m '/home/laptop-main/.espressif/python_env/idf6.0_py3.14_env/bin/python' '/opt/esp-idf/tools/idf.py'"...
-ain_task: Calling apets Jul 29 2019 12:21:46
+�}�����)[0m
+[0;32m�ets Jul 29 2019 12:21:46
 
 rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
 configsip: 0, SPIWP:0xee
@@ -125,52 +102,2267 @@ entry 0x40080644
 [0;32mI (62) boot:  1 phy_init         RF data          01 01 0000f000 00001000[0m
 [0;32mI (69) boot:  2 factory          factory app      00 00 00010000 00100000[0m
 [0;32mI (75) boot: End of partition table[0m
-[0;32mI (79) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=09b24h ( 39716) map[0m
-[0;32mI (100) esp_image: segment 1: paddr=00019b4c vaddr=3ffb0000 size=02b5ch ( 11100) load[0m
-[0;32mI (105) esp_image: segment 2: paddr=0001c6b0 vaddr=40080000 size=03968h ( 14696) load[0m
-[0;32mI (111) esp_image: segment 3: paddr=00020020 vaddr=400d0020 size=1176ch ( 71532) map[0m
-[0;32mI (137) esp_image: segment 4: paddr=00031794 vaddr=40083968 size=09228h ( 37416) load[0m
-[0;32mI (153) esp_image: segment 5: paddr=0003a9c4 vaddr=50000000 size=00028h (    40) load[0m
-[0;32mI (159) boot: Loaded app from partition at offset 0x10000[0m
-[0;32mI (159) boot: Disabling RNG early entropy source...[0m
-[0;32mI (171) cpu_start: Multicore app[0m
-[0;32mI (179) cpu_start: GPIO 3 and 1 are used as console UART I/O pins[0m
-[0;32mI (179) cpu_start: Pro cpu start user code[0m
-[0;32mI (179) cpu_start: cpu freq: 160000000 Hz[0m
-[0;32mI (184) app_init: Application information:[0m
-[0;32mI (189) app_init: Project name:     crater_creator_firmware[0m
-[0;32mI (195) app_init: App version:      9782188-dirty[0m
-[0;32mI (200) app_init: Compile time:     Mar 30 2026 21:50:07[0m
-[0;32mI (206) app_init: ELF file SHA256:  dbc77a60396b7410...[0m
-[0;32mI (212) app_init: ESP-IDF:          v6.0[0m
-[0;32mI (217) efuse_init: Min chip rev:     v0.0[0m
-[0;32mI (222) efuse_init: Max chip rev:     v3.99 [0m
-[0;32mI (227) efuse_init: Chip rev:         v3.1[0m
-[0;32mI (232) heap_init: Initializing. RAM available for dynamic allocation:[0m
-[0;32mI (239) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM[0m
-[0;32mI (245) heap_init: At 3FFB34E8 len 0002CB18 (178 KiB): DRAM[0m
-[0;32mI (251) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM[0m
-[0;32mI (257) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM[0m
-[0;32mI (264) heap_init: At 4008CB90 len 00013470 (77 KiB): IRAM[0m
-[0;32mI (271) spi_flash: detected chip: generic[0m
-[0;32mI (275) spi_flash: flash io: dio[0m
-[0;32mI (279) main_task: Started on CPU0[0m
-[0;32mI (289) main_task: Calling app_main()[0m
+[0;32mI (79) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=0af44h ( 44868) map[0m
+[0;32mI (102) esp_image: segment 1: paddr=0001af6c vaddr=3ffb0000 size=02b5ch ( 11100) load[0m
+[0;32mI (107) esp_image: segment 2: paddr=0001dad0 vaddr=40080000 size=02548h (  9544) load[0m
+[0;32mI (111) esp_image: segment 3: paddr=00020020 vaddr=400d0020 size=1228ch ( 74380) map[0m
+[0;32mI (140) esp_image: segment 4: paddr=000322b4 vaddr=40082548 size=0a648h ( 42568) load[0m
+[0;32mI (158) esp_image: segment 5: paddr=0003c904 vaddr=50000000 size=00028h (    40) load[0m
+[0;32mI (164) boot: Loaded app from partition at offset 0x10000[0m
+[0;32mI (164) boot: Disabling RNG early entropy source...[0m
+[0;32mI (176) cpu_start: Multicore app[0m
+[0;32mI (184) cpu_start: GPIO 3 and 1 are used as console UART I/O pins[0m
+[0;32mI (184) cpu_start: Pro cpu start user code[0m
+[0;32mI (184) cpu_start: cpu freq: 160000000 Hz[0m
+[0;32mI (189) app_init: Application information:[0m
+[0;32mI (194) app_init: Project name:     crater_creator_firmware[0m
+[0;32mI (200) app_init: App version:      9af0407-dirty[0m
+[0;32mI (205) app_init: Compile time:     Mar 31 2026 08:10:52[0m
+[0;32mI (211) app_init: ELF file SHA256:  16dc3491ca92559e...[0m
+[0;32mI (217) app_init: ESP-IDF:          v6.0[0m
+[0;32mI (222) efuse_init: Min chip rev:     v0.0[0m
+[0;32mI (226) efuse_init: Max chip rev:     v3.99 [0m
+[0;32mI (231) efuse_init: Chip rev:         v3.1[0m
+[0;32mI (236) heap_init: Initializing. RAM available for dynamic allocation:[0m
+[0;32mI (244) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM[0m
+[0;32mI (250) heap_init: At 3FFB34E8 len 0002CB18 (178 KiB): DRAM[0m
+[0;32mI (256) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM[0m
+[0;32mI (262) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM[0m
+[0;32mI (269) heap_init: At 4008CB90 len 00013470 (77 KiB): IRAM[0m
+[0;32mI (276) spi_flash: detected chip: generic[0m
+[0;32mI (279) spi_flash: flash io: dio[0m
+[0;32mI (284) main_task: Started on CPU0[0m
+[0;32mI (294) main_task: Calling app_main()[0m
+[0;32mI (294) crater_fw: app_main: ====== CRATER CREATOR FIRMWARE STARTING ======[0m
+[0;32mI (294) crater_fw: app_main: compiled Mar 31 2026 08:19:47[0m
+[0;32mI (304) crater_fw: app_main: creating heartbeat task[0m
+[0;32mI (304) crater_fw: vHeartbeatTask: starting heartbeat task[0m
+[0;32mI (314) crater_fw: vHeartbeatTask: cycle 1[0m
 .
-[0;33mW (289) crater_fw: x sensor: 0[0m
-[0;33mW (289) crater_fw: y sensor: 0[0m
-[0;32mI (309) main_task: Returned from app_main()[0m
+[0;32mI (314) crater_fw: app_main: configuring sensors[0m
+[0;32mI (324) crater_fw: app_main: sensor X: trig=19, echo=21[0m
+[0;32mI (324) crater_fw: app_main: sensor Y: trig=22, echo=23[0m
+[0;32mI (334) crater_fw: app_main: initializing sensor data structs[0m
+[0;32mI (344) crater_fw: app_main: creating mutexes[0m
+[0;32mI (344) crater_fw: app_main: X mutex created: 0x3ffb73e8[0m
+[0;32mI (354) crater_fw: app_main: Y mutex created: 0x3ffb7440[0m
+[0;32mI (354) crater_fw: app_main: creating SensorTask (stack=2048, priority=5)[0m
+[0;32mI (364) crater_fw: vSensorTask: starting sensor task[0m
+[0;32mI (374) crater_fw: vSensorTask: initializing X sensor (trig=19, echo=21)[0m
+[0;33mW (374) crater_fw: x sensor: 0[0m
+[0;32mI (384) crater_fw: vSensorTask: initializing Y sensor (trig=22, echo=23)[0m
+[0;33mW (394) crater_fw: y sensor: 0[0m
+[0;32mI (394) crater_fw: vSensorTask: all sensors initialized, entering read loop[0m
+[0;32mI (404) crater_fw: vSensorTask: === read cycle 1 ===[0m
+[0;32mI (404) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (414) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (414) crater_fw: app_main: creating CalcTask (stack=2048, priority=5)[0m
+[0;32mI (424) crater_fw: vCalcTask: starting calc task[0m
+[0;32mI (434) crater_fw: vCalcTask: initial time=160162[0m
+[0;32mI (434) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (444) crater_fw: vCalcTask: CALIBRATION state, time=171280[0m
+[0;32mI (444) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (444) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (464) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (464) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (464) crater_fw: vCalcTask: CALIBRATION state, time=196038[0m
+[0;32mI (464) crater_fw: app_main: all tasks created, free heap=281180[0m
+[0;32mI (474) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (494) crater_fw: vSensorTask: readings: (4.913793, 32.672413)[0m
+[0;32mI (494) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (504) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (504) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (514) crater_fw: vCalcTask: CALIBRATION state, time=239769[0m
+[0;32mI (514) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (524) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (524) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (544) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (544) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (544) crater_fw: vCalcTask: CALIBRATION state, time=279091[0m
+[0;32mI (504) crater_fw: app_main: sensor_data_array[0]=0x3ffb03f8 [1]=0x3ffb03e0 [2]=0x0[0m
+[0;32mI (564) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (574) crater_fw: vSensorTask: cycle 1 complete, sleeping ~28ms[0m
+[0;32mI (584) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (584) crater_fw: vSensorTask: === read cycle 2 ===[0m
+[0;32mI (584) crater_fw: vCalcTask: CALIBRATION state, time=319195[0m
+[0;32mI (594) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (604) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (604) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (584) crater_fw: app_main: ====== INIT COMPLETE ======[0m
+[0;32mI (624) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (634) crater_fw: vCalcTask: CALIBRATION state, time=360768[0m
+[0;32mI (634) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (644) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (654) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (654) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (654) crater_fw: vCalcTask: CALIBRATION state, time=385514[0m
+[0;32mI (654) main_task: Returned from app_main()[0m
+[0;32mI (664) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (684) crater_fw: vSensorTask: readings: (4.913793, 32.672413)[0m
+[0;32mI (684) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (684) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (694) crater_fw: vCalcTask: CALIBRATION state, time=421451[0m
+[0;32mI (694) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (704) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (714) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (724) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (724) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (734) crater_fw: vCalcTask: CALIBRATION state, time=459732[0m
+[0;32mI (734) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (744) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (764) crater_fw: vSensorTask: cycle 2 complete, sleeping ~28ms[0m
+[0;32mI (764) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (764) crater_fw: vSensorTask: === read cycle 3 ===[0m
+[0;32mI (764) crater_fw: vCalcTask: CALIBRATION state, time=498534[0m
+[0;32mI (774) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (784) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (784) crater_fw: vSensorTask: X raw=4.9310 cm[0m
+[0;32mI (804) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (804) crater_fw: vCalcTask: CALIBRATION state, time=534117[0m
+[0;32mI (814) crater_fw: vHeartbeatTask: cycle 2[0m
+[0;32mI (814) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (814) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
 <3
+[0;32mI (824) crater_fw: vSensorTask: Y raw=32.6552 cm[0m
+[0;32mI (834) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (834) crater_fw: vCalcTask: CALIBRATION state, time=569273[0m
+[0;32mI (844) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (854) crater_fw: vSensorTask: readings: (4.931035, 32.655174)[0m
+[0;32mI (854) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (864) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (864) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6552[0m
+[0;32mI (874) crater_fw: vCalcTask: CALIBRATION state, time=601050[0m
+[0;32mI (874) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (884) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (894) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9310[0m
+[0;32mI (904) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (904) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (914) crater_fw: vCalcTask: CALIBRATION state, time=640372[0m
+[0;32mI (924) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (934) crater_fw: vSensorTask: cycle 3 complete, sleeping ~28ms[0m
+[0;32mI (934) crater_fw: vSensorTask: === read cycle 4 ===[0m
+[0;32mI (944) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (944) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (944) crater_fw: vCalcTask: CALIBRATION state, time=677785[0m
+[0;32mI (954) crater_fw: vSensorTask: X raw=4.9310 cm[0m
+[0;32mI (964) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (984) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (984) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (984) crater_fw: vCalcTask: CALIBRATION state, time=713284[0m
+[0;32mI (984) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (994) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (1014) crater_fw: vSensorTask: readings: (4.931035, 32.672413)[0m
+[0;32mI (1014) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (1014) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (1014) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (1024) crater_fw: vCalcTask: CALIBRATION state, time=750614[0m
+[0;32mI (1024) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (1034) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (1044) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9310[0m
+[0;32mI (1054) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (1054) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (1064) crater_fw: vCalcTask: CALIBRATION state, time=790458[0m
+[0;32mI (1074) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (1084) crater_fw: vSensorTask: cycle 4 complete, sleeping ~28ms[0m
+[0;32mI (1084) crater_fw: vSensorTask: === read cycle 5 ===[0m
+[0;32mI (1094) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (1094) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (1094) crater_fw: vCalcTask: CALIBRATION state, time=828391[0m
+[0;32mI (1104) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (1114) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (1134) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (1134) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (1134) crater_fw: vSensorTask: Y raw=32.6897 cm[0m
+[0;32mI (1134) crater_fw: vCalcTask: CALIBRATION state, time=864415[0m
+[0;32mI (1144) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (1164) crater_fw: vSensorTask: readings: (4.913793, 32.689655)[0m
+[0;32mI (1164) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (1164) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (1164) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6897[0m
+[0;32mI (1174) crater_fw: vCalcTask: CALIBRATION state, time=902002[0m
+[0;32mI (1174) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (1184) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (1194) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (1204) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (1204) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (1214) crater_fw: vCalcTask: CALIBRATION state, time=941845[0m
+[0;32mI (1224) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (1234) crater_fw: vSensorTask: cycle 5 complete, sleeping ~28ms[0m
+[0;32mI (1234) crater_fw: vSensorTask: === read cycle 6 ===[0m
+[0;32mI (1244) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (1244) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (1254) crater_fw: vCalcTask: CALIBRATION state, time=979779[0m
+[0;32mI (1254) crater_fw: vSensorTask: X raw=4.9310 cm[0m
+[0;32mI (1264) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (1284) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (1284) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (1284) crater_fw: vSensorTask: Y raw=32.6897 cm[0m
+[0;32mI (1284) crater_fw: vCalcTask: CALIBRATION state, time=1015803[0m
+[0;32mI (1294) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (1314) crater_fw: vSensorTask: readings: (4.931035, 32.689655)[0m
+[0;32mI (1314) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (1314) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (1314) crater_fw: vCalcTask: CALIBRATION state, time=1047400[0m
+[0;32mI (1324) crater_fw: vHeartbeatTask: cycle 3[0m
 .
+[0;32mI (1334) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (1324) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6897[0m
+[0;32mI (1354) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (1354) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (1354) crater_fw: vCalcTask: CALIBRATION state, time=1085333[0m
+[0;32mI (1364) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9310[0m
+[0;32mI (1364) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (1374) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (1394) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (1394) crater_fw: vCalcTask: CALIBRATION state, time=1124042[0m
+[0;32mI (1404) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (1404) crater_fw: vSensorTask: cycle 6 complete, sleeping ~28ms[0m
+[0;32mI (1414) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (1414) crater_fw: vSensorTask: === read cycle 7 ===[0m
+[0;32mI (1424) crater_fw: vCalcTask: CALIBRATION state, time=1150350[0m
+[0;32mI (1424) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (1434) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (1444) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (1454) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (1454) crater_fw: vCalcTask: CALIBRATION state, time=1186541[0m
+[0;32mI (1464) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (1474) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (1484) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (1484) crater_fw: vCalcTask: CALIBRATION state, time=1211714[0m
+[0;32mI (1484) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (1494) crater_fw: vSensorTask: Y raw=193.1035 cm[0m
+[0;32mI (1504) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (1504) crater_fw: vCalcTask: CALIBRATION state, time=1236714[0m
+[0;32mI (1514) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (1524) crater_fw: vSensorTask: readings: (4.913793, 193.103455)[0m
+[0;32mI (1524) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (1534) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (1534) crater_fw: vSensorTask: Y semaphore acquired, wrote y=193.1035[0m
+[0;32mI (1534) crater_fw: vCalcTask: CALIBRATION state, time=1269099[0m
+[0;32mI (1544) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (1554) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (1554) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (1574) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (1574) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (1574) crater_fw: vCalcTask: CALIBRATION state, time=1309116[0m
+[0;32mI (1594) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (1604) crater_fw: vSensorTask: cycle 7 complete, sleeping ~28ms[0m
+[0;32mI (1604) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (1604) crater_fw: vSensorTask: === read cycle 8 ===[0m
+[0;32mI (1614) crater_fw: vCalcTask: CALIBRATION state, time=1341407[0m
+[0;32mI (1614) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (1624) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (1634) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (1644) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (1644) crater_fw: vCalcTask: CALIBRATION state, time=1377598[0m
+[0;32mI (1654) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (1664) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (1674) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (1674) crater_fw: vCalcTask: CALIBRATION state, time=1402771[0m
+[0;32mI (1674) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (1684) crater_fw: vSensorTask: Y raw=174.8965 cm[0m
+[0;32mI (1694) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (1694) crater_fw: vCalcTask: CALIBRATION state, time=1427771[0m
+[0;32mI (1704) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (1714) crater_fw: vSensorTask: readings: (4.913793, 174.896545)[0m
+[0;32mI (1714) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (1724) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (1724) crater_fw: vSensorTask: Y semaphore acquired, wrote y=174.8965[0m
+[0;32mI (1734) crater_fw: vCalcTask: CALIBRATION state, time=1460156[0m
+[0;32mI (1734) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (1744) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (1754) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (1764) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (1764) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (1774) crater_fw: vCalcTask: CALIBRATION state, time=1500173[0m
+[0;32mI (1784) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (1794) crater_fw: vSensorTask: cycle 8 complete, sleeping ~28ms[0m
+[0;32mI (1794) crater_fw: vSensorTask: === read cycle 9 ===[0m
+[0;32mI (1804) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (1804) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (1804) crater_fw: vCalcTask: CALIBRATION state, time=1538193[0m
+[0;32mI (1814) crater_fw: vSensorTask: X raw=4.9310 cm[0m
+[0;32mI (1824) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (1834) crater_fw: vHeartbeatTask: cycle 4[0m
 <3
+[0;32mI (1844) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (1844) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (1844) crater_fw: vSensorTask: Y raw=32.6897 cm[0m
+[0;32mI (1854) crater_fw: vCalcTask: CALIBRATION state, time=1579512[0m
+[0;32mI (1864) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (1874) crater_fw: vSensorTask: readings: (4.931035, 32.689655)[0m
+[0;32mI (1874) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (1874) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (1884) crater_fw: vCalcTask: CALIBRATION state, time=1611109[0m
+[0;32mI (1884) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6897[0m
+[0;32mI (1894) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (1904) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (1914) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (1914) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9310[0m
+[0;32mI (1924) crater_fw: vCalcTask: CALIBRATION state, time=1649998[0m
+[0;32mI (1924) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (1934) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (1954) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (1954) crater_fw: vCalcTask: CALIBRATION state, time=1682630[0m
+[0;32mI (1954) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (1964) crater_fw: vSensorTask: cycle 9 complete, sleeping ~28ms[0m
+[0;32mI (1974) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (1974) crater_fw: vSensorTask: === read cycle 10 ===[0m
+[0;32mI (1974) crater_fw: vCalcTask: CALIBRATION state, time=1708938[0m
+[0;32mI (1984) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (1994) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (2004) crater_fw: vSensorTask: X raw=4.9310 cm[0m
+[0;32mI (2014) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (2014) crater_fw: vCalcTask: CALIBRATION state, time=1745216[0m
+[0;32mI (2024) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (2034) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (2034) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (2034) crater_fw: vSensorTask: Y raw=32.6897 cm[0m
+[0;32mI (2044) crater_fw: vCalcTask: CALIBRATION state, time=1770396[0m
+[0;32mI (2054) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (2064) crater_fw: vSensorTask: readings: (4.931035, 32.689655)[0m
+[0;32mI (2064) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (2074) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (2074) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6897[0m
+[0;32mI (2074) crater_fw: vCalcTask: CALIBRATION state, time=1808069[0m
+[0;32mI (2084) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (2094) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (2094) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9310[0m
+[0;32mI (2114) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (2114) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (2114) crater_fw: vCalcTask: CALIBRATION state, time=1847999[0m
+[0;32mI (2134) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (2144) crater_fw: vSensorTask: cycle 10 complete, sleeping ~28ms[0m
+[0;32mI (2144) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (2144) crater_fw: vSensorTask: === read cycle 11 ===[0m
+[0;32mI (2154) crater_fw: vCalcTask: CALIBRATION state, time=1880377[0m
+[0;32mI (2154) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (2164) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (2174) crater_fw: vSensorTask: X raw=4.9310 cm[0m
+[0;32mI (2184) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (2184) crater_fw: vCalcTask: CALIBRATION state, time=1916655[0m
+[0;32mI (2194) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (2204) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (2214) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (2214) crater_fw: vCalcTask: CALIBRATION state, time=1941829[0m
+[0;32mI (2214) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (2224) crater_fw: vSensorTask: Y raw=191.1207 cm[0m
+[0;32mI (2234) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (2234) crater_fw: vCalcTask: CALIBRATION state, time=1966828[0m
+[0;32mI (2244) crater_fw: vCalcTask: waiting for 2s delay before calibration[0m
+[0;32mI (2254) crater_fw: vSensorTask: readings: (4.931035, 191.120697)[0m
+[0;32mI (2254) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (2264) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (2264) crater_fw: vSensorTask: Y semaphore acquired, wrote y=191.1207[0m
+[0;32mI (2264) crater_fw: vCalcTask: CALIBRATION state, time=1999213[0m
+[0;32mI (2274) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (2284) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (2284) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9310[0m
+[0;32mI (2304) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (2304) crater_fw: vCalcTask: calibration Y: avg=191.1207, frames=1[0m
+[0;32mI (2314) crater_fw: vCalcTask: calibration X: avg=4.9310, frames=1[0m
+[0;32mI (2324) crater_fw: vSensorTask: cycle 11 complete, sleeping ~28ms[0m
+[0;32mI (2334) crater_fw: vSensorTask: === read cycle 12 ===[0m
+[0;32mI (2334) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (2334) crater_fw: vHeartbeatTask: cycle 5[0m
 .
+[0;32mI (2344) crater_fw: vCalcTask: CALIBRATION state, time=2071434[0m
+[0;32mI (2334) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (2354) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (2364) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (2364) crater_fw: vCalcTask: calibration Y: avg=191.1207, frames=2[0m
+[0;32mI (2374) crater_fw: vCalcTask: calibration X: avg=4.9310, frames=2[0m
+[0;32mI (2394) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (2394) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (2394) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (2394) crater_fw: vCalcTask: CALIBRATION state, time=2126208[0m
+[0;32mI (2404) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (2414) crater_fw: vCalcTask: calibration Y: avg=191.1207, frames=3[0m
+[0;32mI (2424) crater_fw: vSensorTask: readings: (4.913793, 32.672413)[0m
+[0;32mI (2424) crater_fw: vCalcTask: calibration X: avg=4.9310, frames=3[0m
+[0;32mI (2424) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (2444) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (2444) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (2444) crater_fw: vCalcTask: CALIBRATION state, time=2177423[0m
+[0;32mI (2454) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (2464) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (2464) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (2484) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (2484) crater_fw: vCalcTask: calibration Y: avg=151.5086, frames=4[0m
+[0;32mI (2494) crater_fw: vCalcTask: calibration X: avg=4.9267, frames=4[0m
+[0;32mI (2504) crater_fw: vSensorTask: cycle 12 complete, sleeping ~28ms[0m
+[0;32mI (2504) crater_fw: vSensorTask: === read cycle 13 ===[0m
+[0;32mI (2514) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (2514) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (2524) crater_fw: vCalcTask: CALIBRATION state, time=2249558[0m
+[0;32mI (2524) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (2534) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (2544) crater_fw: vCalcTask: calibration Y: avg=127.7414, frames=5[0m
+[0;32mI (2554) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (2554) crater_fw: vCalcTask: calibration X: avg=4.9241, frames=5[0m
+[0;32mI (2564) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (2574) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (2574) crater_fw: vCalcTask: CALIBRATION state, time=2304585[0m
+[0;32mI (2584) crater_fw: vSensorTask: readings: (4.913793, 32.672413)[0m
+[0;32mI (2584) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (2584) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (2594) crater_fw: vCalcTask: calibration Y: avg=111.8966, frames=6[0m
+[0;32mI (2604) crater_fw: vCalcTask: calibration X: avg=4.9224, frames=6[0m
+[0;32mI (2604) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (2624) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (2624) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (2624) crater_fw: vCalcTask: CALIBRATION state, time=2357630[0m
+[0;32mI (2634) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (2644) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (2644) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (2654) crater_fw: vCalcTask: calibration Y: avg=100.5788, frames=7[0m
+[0;32mI (2664) crater_fw: vCalcTask: calibration X: avg=4.9212, frames=7[0m
+[0;32mI (2684) crater_fw: vSensorTask: cycle 13 complete, sleeping ~28ms[0m
+[0;32mI (2684) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (2684) crater_fw: vSensorTask: === read cycle 14 ===[0m
+[0;32mI (2684) crater_fw: vCalcTask: CALIBRATION state, time=2416744[0m
+[0;32mI (2694) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (2694) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (2704) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (2714) crater_fw: vCalcTask: calibration Y: avg=92.0905, frames=8[0m
+[0;32mI (2724) crater_fw: vCalcTask: calibration X: avg=4.9203, frames=8[0m
+[0;32mI (2734) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (2744) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (2744) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (2744) crater_fw: vCalcTask: CALIBRATION state, time=2472125[0m
+[0;32mI (2754) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (2764) crater_fw: vSensorTask: readings: (4.913793, 32.672413)[0m
+[0;32mI (2764) crater_fw: vCalcTask: calibration Y: avg=85.4885, frames=9[0m
+[0;32mI (2764) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (2774) crater_fw: vCalcTask: calibration X: avg=4.9195, frames=9[0m
+[0;32mI (2784) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (2794) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (2794) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (2804) crater_fw: vCalcTask: CALIBRATION state, time=2530458[0m
+[0;32mI (2804) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (2814) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (2824) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (2824) crater_fw: vCalcTask: calibration Y: avg=80.2069, frames=10[0m
+[0;32mI (2844) crater_fw: vHeartbeatTask: cycle 6[0m
 <3
+[0;32mI (2844) crater_fw: vCalcTask: calibration X: avg=4.9190, frames=10[0m
+[0;32mI (2854) crater_fw: vSensorTask: cycle 14 complete, sleeping ~28ms[0m
+[0;32mI (2854) crater_fw: vSensorTask: === read cycle 15 ===[0m
+[0;32mI (2864) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (2864) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (2874) crater_fw: vCalcTask: CALIBRATION state, time=2600683[0m
+[0;32mI (2874) crater_fw: vSensorTask: X raw=4.9310 cm[0m
+[0;32mI (2884) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (2894) crater_fw: vCalcTask: calibration Y: avg=75.8856, frames=11[0m
+[0;32mI (2904) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (2904) crater_fw: vCalcTask: calibration X: avg=4.9185, frames=11[0m
+[0;32mI (2914) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (2924) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (2924) crater_fw: vCalcTask: CALIBRATION state, time=2655797[0m
+[0;32mI (2934) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (2934) crater_fw: vCalcTask: calibration Y: avg=72.2845, frames=12[0m
+[0;32mI (2944) crater_fw: vSensorTask: readings: (4.931035, 32.672413)[0m
+[0;32mI (2944) crater_fw: vCalcTask: calibration X: avg=4.9181, frames=12[0m
+[0;32mI (2954) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (2964) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (2974) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (2974) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (2974) crater_fw: vCalcTask: CALIBRATION state, time=2708928[0m
+[0;32mI (2984) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9310[0m
+[0;32mI (2994) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (2994) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (3004) crater_fw: vCalcTask: calibration Y: avg=69.2374, frames=13[0m
+[0;32mI (3014) crater_fw: vCalcTask: calibration X: avg=4.9191, frames=13[0m
+[0;32mI (3034) crater_fw: vSensorTask: cycle 15 complete, sleeping ~28ms[0m
+[0;32mI (3034) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (3034) crater_fw: vSensorTask: === read cycle 16 ===[0m
+[0;32mI (3034) crater_fw: vCalcTask: CALIBRATION state, time=2768129[0m
+[0;32mI (3044) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (3054) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (3054) crater_fw: vSensorTask: X raw=4.9310 cm[0m
+[0;32mI (3064) crater_fw: vCalcTask: calibration Y: avg=66.6256, frames=14[0m
+[0;32mI (3074) crater_fw: vCalcTask: calibration X: avg=4.9200, frames=14[0m
+[0;32mI (3084) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (3094) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (3094) crater_fw: vSensorTask: Y raw=32.6552 cm[0m
+[0;32mI (3094) crater_fw: vCalcTask: CALIBRATION state, time=2823684[0m
+[0;32mI (3104) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (3114) crater_fw: vSensorTask: readings: (4.931035, 32.655174)[0m
+[0;32mI (3114) crater_fw: vCalcTask: calibration Y: avg=64.3621, frames=15[0m
+[0;32mI (3114) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (3124) crater_fw: vCalcTask: calibration X: avg=4.9207, frames=15[0m
+[0;32mI (3134) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6552[0m
+[0;32mI (3144) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (3144) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (3154) crater_fw: vCalcTask: CALIBRATION state, time=2882190[0m
+[0;32mI (3154) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9310[0m
+[0;32mI (3164) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (3174) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (3174) crater_fw: vCalcTask: calibration Y: avg=62.3804, frames=16[0m
+[0;32mI (3194) crater_fw: vCalcTask: calibration X: avg=4.9213, frames=16[0m
+[0;32mI (3204) crater_fw: vSensorTask: cycle 16 complete, sleeping ~28ms[0m
+[0;32mI (3204) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (3204) crater_fw: vSensorTask: === read cycle 17 ===[0m
+[0;32mI (3214) crater_fw: vCalcTask: CALIBRATION state, time=2941391[0m
+[0;32mI (3214) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (3224) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (3234) crater_fw: vSensorTask: X raw=4.9310 cm[0m
+[0;32mI (3234) crater_fw: vCalcTask: calibration Y: avg=60.6319, frames=17[0m
+[0;32mI (3244) crater_fw: vCalcTask: calibration X: avg=4.9219, frames=17[0m
+[0;32mI (3264) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (3264) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (3264) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (3264) crater_fw: vCalcTask: CALIBRATION state, time=2996946[0m
+[0;32mI (3274) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (3284) crater_fw: vCalcTask: calibration Y: avg=59.0776, frames=18[0m
+[0;32mI (3294) crater_fw: vSensorTask: readings: (4.931035, 32.672413)[0m
+[0;32mI (3294) crater_fw: vCalcTask: calibration X: avg=4.9224, frames=18[0m
+[0;32mI (3304) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (3314) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (3314) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (3314) crater_fw: vCalcTask: CALIBRATION state, time=3048248[0m
+[0;32mI (3324) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (3334) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (3334) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9310[0m
+[0;32mI (3344) crater_fw: vHeartbeatTask: cycle 7[0m
 .
+[0;32mI (3354) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (3354) crater_fw: vCalcTask: calibration Y: avg=57.6878, frames=19[0m
+[0;32mI (3374) crater_fw: vCalcTask: calibration X: avg=4.9229, frames=19[0m
+[0;32mI (3384) crater_fw: vSensorTask: cycle 17 complete, sleeping ~28ms[0m
+[0;32mI (3384) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (3384) crater_fw: vSensorTask: === read cycle 18 ===[0m
+[0;32mI (3394) crater_fw: vCalcTask: CALIBRATION state, time=3119775[0m
+[0;32mI (3394) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (3404) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (3414) crater_fw: vSensorTask: X raw=4.9310 cm[0m
+[0;32mI (3414) crater_fw: vCalcTask: calibration Y: avg=56.4371, frames=20[0m
+[0;32mI (3424) crater_fw: vCalcTask: calibration X: avg=4.9233, frames=20[0m
+[0;32mI (3444) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (3444) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (3444) crater_fw: vSensorTask: Y raw=32.6897 cm[0m
+[0;32mI (3444) crater_fw: vCalcTask: CALIBRATION state, time=3175330[0m
+[0;32mI (3454) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (3464) crater_fw: vCalcTask: calibration Y: avg=55.3054, frames=21[0m
+[0;32mI (3474) crater_fw: vSensorTask: readings: (4.931035, 32.689655)[0m
+[0;32mI (3474) crater_fw: vCalcTask: calibration X: avg=4.9236, frames=21[0m
+[0;32mI (3474) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (3494) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (3494) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6897[0m
+[0;32mI (3494) crater_fw: vCalcTask: CALIBRATION state, time=3226631[0m
+[0;32mI (3504) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (3514) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (3514) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9310[0m
+[0;32mI (3534) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (3534) crater_fw: vCalcTask: calibration Y: avg=54.2774, frames=22[0m
+[0;32mI (3544) crater_fw: vCalcTask: calibration X: avg=4.9240, frames=22[0m
+[0;32mI (3554) crater_fw: vSensorTask: cycle 18 complete, sleeping ~28ms[0m
+[0;32mI (3554) crater_fw: vSensorTask: === read cycle 19 ===[0m
+[0;32mI (3564) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (3564) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (3564) crater_fw: vCalcTask: CALIBRATION state, time=3298853[0m
+[0;32mI (3574) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (3584) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (3594) crater_fw: vCalcTask: calibration Y: avg=53.3388, frames=23[0m
+[0;32mI (3604) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (3604) crater_fw: vCalcTask: calibration X: avg=4.9243, frames=23[0m
+[0;32mI (3614) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (3624) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (3624) crater_fw: vCalcTask: CALIBRATION state, time=3353967[0m
+[0;32mI (3634) crater_fw: vSensorTask: readings: (4.913793, 32.672413)[0m
+[0;32mI (3634) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (3634) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (3644) crater_fw: vCalcTask: calibration Y: avg=52.4785, frames=24[0m
+[0;32mI (3654) crater_fw: vCalcTask: calibration X: avg=4.9246, frames=24[0m
+[0;32mI (3654) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (3674) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (3674) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (3674) crater_fw: vCalcTask: CALIBRATION state, time=3407098[0m
+[0;32mI (3684) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (3694) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (3694) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (3704) crater_fw: vCalcTask: calibration Y: avg=51.6862, frames=25[0m
+[0;32mI (3714) crater_fw: vCalcTask: calibration X: avg=4.9241, frames=25[0m
+[0;32mI (3734) crater_fw: vSensorTask: cycle 19 complete, sleeping ~28ms[0m
+[0;32mI (3734) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (3734) crater_fw: vSensorTask: === read cycle 20 ===[0m
+[0;32mI (3734) crater_fw: vCalcTask: CALIBRATION state, time=3466299[0m
+[0;32mI (3744) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (3744) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (3754) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (3764) crater_fw: vCalcTask: calibration Y: avg=50.9549, frames=26[0m
+[0;32mI (3774) crater_fw: vCalcTask: calibration X: avg=4.9237, frames=26[0m
+[0;32mI (3784) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (3794) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (3794) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (3794) crater_fw: vCalcTask: CALIBRATION state, time=3521854[0m
+[0;32mI (3804) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (3814) crater_fw: vSensorTask: readings: (4.913793, 32.672413)[0m
+[0;32mI (3814) crater_fw: vCalcTask: calibration Y: avg=50.2778, frames=27[0m
+[0;32mI (3814) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (3824) crater_fw: vCalcTask: calibration X: avg=4.9234, frames=27[0m
+[0;32mI (3834) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (3844) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (3844) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (3854) crater_fw: vHeartbeatTask: cycle 8[0m
 <3
+[0;32mI (3854) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (3854) crater_fw: vCalcTask: CALIBRATION state, time=3580360[0m
+[0;32mI (3864) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (3874) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (3884) crater_fw: vCalcTask: calibration Y: avg=49.6490, frames=28[0m
+[0;32mI (3894) crater_fw: vCalcTask: calibration X: avg=4.9230, frames=28[0m
+[0;32mI (3904) crater_fw: vSensorTask: cycle 20 complete, sleeping ~28ms[0m
+[0;32mI (3904) crater_fw: vSensorTask: === read cycle 21 ===[0m
+[0;32mI (3914) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (3914) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (3924) crater_fw: vCalcTask: CALIBRATION state, time=3650585[0m
+[0;32mI (3924) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (3934) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (3944) crater_fw: vCalcTask: calibration Y: avg=49.0636, frames=29[0m
+[0;32mI (3954) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (3954) crater_fw: vCalcTask: calibration X: avg=4.9227, frames=29[0m
+[0;32mI (3964) crater_fw: vSensorTask: Y raw=32.6897 cm[0m
+[0;32mI (3974) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (3974) crater_fw: vCalcTask: CALIBRATION state, time=3705700[0m
+[0;32mI (3984) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (3984) crater_fw: vCalcTask: calibration Y: avg=48.5172, frames=30[0m
+[0;32mI (3994) crater_fw: vSensorTask: readings: (4.913793, 32.689655)[0m
+[0;32mI (3994) crater_fw: vCalcTask: calibration X: avg=4.9224, frames=30[0m
+[0;32mI (4004) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (4014) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6897[0m
+[0;32mI (4024) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (4024) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (4024) crater_fw: vCalcTask: CALIBRATION state, time=3758831[0m
+[0;32mI (4034) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (4044) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (4044) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (4054) crater_fw: vCalcTask: calibration Y: avg=48.0067, frames=31[0m
+[0;32mI (4064) crater_fw: vCalcTask: calibration X: avg=4.9221, frames=31[0m
+[0;32mI (4084) crater_fw: vSensorTask: cycle 21 complete, sleeping ~28ms[0m
+[0;32mI (4084) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (4084) crater_fw: vSensorTask: === read cycle 22 ===[0m
+[0;32mI (4084) crater_fw: vCalcTask: CALIBRATION state, time=3818032[0m
+[0;32mI (4094) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (4104) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (4104) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (4114) crater_fw: vCalcTask: calibration Y: avg=47.5280, frames=32[0m
+[0;32mI (4124) crater_fw: vCalcTask: calibration X: avg=4.9219, frames=32[0m
+[0;32mI (4134) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (4144) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (4144) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (4144) crater_fw: vCalcTask: CALIBRATION state, time=3873587[0m
+[0;32mI (4154) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (4164) crater_fw: vSensorTask: readings: (4.913793, 32.672413)[0m
+[0;32mI (4164) crater_fw: vCalcTask: calibration Y: avg=47.0784, frames=33[0m
+[0;32mI (4164) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (4174) crater_fw: vCalcTask: calibration X: avg=4.9216, frames=33[0m
+[0;32mI (4184) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (4194) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (4194) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (4204) crater_fw: vCalcTask: CALIBRATION state, time=3932093[0m
+[0;32mI (4204) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (4214) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (4224) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (4224) crater_fw: vCalcTask: calibration Y: avg=46.6547, frames=34[0m
+[0;32mI (4244) crater_fw: vCalcTask: calibration X: avg=4.9214, frames=34[0m
+[0;32mI (4254) crater_fw: vSensorTask: cycle 22 complete, sleeping ~28ms[0m
+[0;32mI (4254) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (4254) crater_fw: vSensorTask: === read cycle 23 ===[0m
+[0;32mI (4264) crater_fw: vCalcTask: CALIBRATION state, time=3991294[0m
+[0;32mI (4264) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (4274) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (4284) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (4284) crater_fw: vCalcTask: calibration Y: avg=46.2552, frames=35[0m
+[0;32mI (4294) crater_fw: vCalcTask: calibration X: avg=4.9212, frames=35[0m
+[0;32mI (4314) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (4314) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (4314) crater_fw: vSensorTask: Y raw=32.6897 cm[0m
+[0;32mI (4314) crater_fw: vCalcTask: CALIBRATION state, time=4046849[0m
+[0;32mI (4324) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (4334) crater_fw: vCalcTask: calibration Y: avg=45.8779, frames=36[0m
+[0;32mI (4344) crater_fw: vSensorTask: readings: (4.913793, 32.689655)[0m
+[0;32mI (4344) crater_fw: vCalcTask: calibration X: avg=4.9210, frames=36[0m
+[0;32mI (4344) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (4364) crater_fw: vHeartbeatTask: cycle 9[0m
 .
+[0;32mI (4364) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6897[0m
+[0;32mI (4364) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (4374) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (4384) crater_fw: vCalcTask: CALIBRATION state, time=4110477[0m
+[0;32mI (4384) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (4394) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (4404) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (4404) crater_fw: vCalcTask: calibration Y: avg=45.5214, frames=37[0m
+[0;32mI (4424) crater_fw: vCalcTask: calibration X: avg=4.9208, frames=37[0m
+[0;32mI (4434) crater_fw: vSensorTask: cycle 23 complete, sleeping ~28ms[0m
+[0;32mI (4434) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (4434) crater_fw: vSensorTask: === read cycle 24 ===[0m
+[0;32mI (4444) crater_fw: vCalcTask: CALIBRATION state, time=4169677[0m
+[0;32mI (4444) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (4454) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (4464) crater_fw: vSensorTask: X raw=4.9310 cm[0m
+[0;32mI (4464) crater_fw: vCalcTask: calibration Y: avg=45.1838, frames=38[0m
+[0;32mI (4474) crater_fw: vCalcTask: calibration X: avg=4.9206, frames=38[0m
+[0;32mI (4494) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (4494) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (4494) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (4494) crater_fw: vCalcTask: CALIBRATION state, time=4225232[0m
+[0;32mI (4504) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (4514) crater_fw: vCalcTask: calibration Y: avg=44.8634, frames=39[0m
+[0;32mI (4524) crater_fw: vSensorTask: readings: (4.931035, 32.672413)[0m
+[0;32mI (4524) crater_fw: vCalcTask: calibration X: avg=4.9204, frames=39[0m
+[0;32mI (4524) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (4544) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (4544) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (4544) crater_fw: vCalcTask: CALIBRATION state, time=4276534[0m
+[0;32mI (4554) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (4564) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (4564) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9310[0m
+[0;32mI (4584) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (4584) crater_fw: vCalcTask: calibration Y: avg=44.5586, frames=40[0m
+[0;32mI (4594) crater_fw: vCalcTask: calibration X: avg=4.9207, frames=40[0m
+[0;32mI (4604) crater_fw: vSensorTask: cycle 24 complete, sleeping ~28ms[0m
+[0;32mI (4604) crater_fw: vSensorTask: === read cycle 25 ===[0m
+[0;32mI (4614) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (4614) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (4614) crater_fw: vCalcTask: CALIBRATION state, time=4348755[0m
+[0;32mI (4624) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (4634) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (4644) crater_fw: vCalcTask: calibration Y: avg=44.2687, frames=41[0m
+[0;32mI (4654) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (4654) crater_fw: vCalcTask: calibration X: avg=4.9209, frames=41[0m
+[0;32mI (4664) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (4674) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (4674) crater_fw: vCalcTask: CALIBRATION state, time=4403870[0m
+[0;32mI (4684) crater_fw: vSensorTask: readings: (4.913793, 32.672413)[0m
+[0;32mI (4684) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (4684) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (4694) crater_fw: vCalcTask: calibration Y: avg=43.9926, frames=42[0m
+[0;32mI (4704) crater_fw: vCalcTask: calibration X: avg=4.9212, frames=42[0m
+[0;32mI (4704) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (4724) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (4724) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (4724) crater_fw: vCalcTask: CALIBRATION state, time=4457001[0m
+[0;32mI (4734) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (4744) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (4744) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (4754) crater_fw: vCalcTask: calibration Y: avg=43.7293, frames=43[0m
+[0;32mI (4764) crater_fw: vCalcTask: calibration X: avg=4.9210, frames=43[0m
+[0;32mI (4784) crater_fw: vSensorTask: cycle 25 complete, sleeping ~28ms[0m
+[0;32mI (4784) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (4784) crater_fw: vSensorTask: === read cycle 26 ===[0m
+[0;32mI (4784) crater_fw: vCalcTask: CALIBRATION state, time=4516202[0m
+[0;32mI (4794) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (4794) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (4804) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (4814) crater_fw: vCalcTask: calibration Y: avg=43.4781, frames=44[0m
+[0;32mI (4824) crater_fw: vCalcTask: calibration X: avg=4.9208, frames=44[0m
+[0;32mI (4834) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (4844) crater_fw: vSensorTask: Y raw=32.6552 cm[0m
+[0;32mI (4844) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (4844) crater_fw: vCalcTask: CALIBRATION state, time=4577132[0m
+[0;32mI (4854) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (4864) crater_fw: vHeartbeatTask: cycle 10[0m
 <3
+[0;32mI (4864) crater_fw: vCalcTask: calibration Y: avg=43.2379, frames=45[0m
+[0;32mI (4864) crater_fw: vSensorTask: readings: (4.913793, 32.655174)[0m
+[0;32mI (4874) crater_fw: vCalcTask: calibration X: avg=4.9207, frames=45[0m
+[0;32mI (4884) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (4894) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (4894) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6552[0m
+[0;32mI (4894) crater_fw: vCalcTask: CALIBRATION state, time=4628353[0m
+[0;32mI (4904) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (4914) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (4914) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (4934) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (4934) crater_fw: vCalcTask: calibration Y: avg=43.0079, frames=46[0m
+[0;32mI (4944) crater_fw: vCalcTask: calibration X: avg=4.9205, frames=46[0m
+[0;32mI (4954) crater_fw: vSensorTask: cycle 26 complete, sleeping ~28ms[0m
+[0;32mI (4954) crater_fw: vSensorTask: === read cycle 27 ===[0m
+[0;32mI (4964) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (4964) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (4974) crater_fw: vCalcTask: CALIBRATION state, time=4700575[0m
+[0;32mI (4974) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (4984) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (4994) crater_fw: vCalcTask: calibration Y: avg=42.7876, frames=47[0m
+[0;32mI (5004) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (5004) crater_fw: vCalcTask: calibration X: avg=4.9204, frames=47[0m
+[0;32mI (5014) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (5024) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (5024) crater_fw: vCalcTask: CALIBRATION state, time=4755689[0m
+[0;32mI (5034) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (5034) crater_fw: vCalcTask: calibration Y: avg=42.5765, frames=48[0m
+[0;32mI (5044) crater_fw: vSensorTask: readings: (4.913793, 32.672413)[0m
+[0;32mI (5044) crater_fw: vCalcTask: calibration X: avg=4.9203, frames=48[0m
+[0;32mI (5054) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (5064) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (5074) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (5074) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (5074) crater_fw: vCalcTask: CALIBRATION state, time=4808820[0m
+[0;32mI (5084) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (5094) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (5094) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (5104) crater_fw: vCalcTask: calibration Y: avg=42.3744, frames=49[0m
+[0;32mI (5114) crater_fw: vCalcTask: calibration X: avg=4.9201, frames=49[0m
+[0;32mI (5134) crater_fw: vSensorTask: cycle 27 complete, sleeping ~28ms[0m
+[0;32mI (5134) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (5134) crater_fw: vSensorTask: === read cycle 28 ===[0m
+[0;32mI (5134) crater_fw: vCalcTask: CALIBRATION state, time=4868021[0m
+[0;32mI (5144) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (5154) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (5154) crater_fw: vSensorTask: X raw=4.9310 cm[0m
+[0;32mI (5164) crater_fw: vCalcTask: calibration Y: avg=42.1803, frames=50[0m
+[0;32mI (5174) crater_fw: vCalcTask: calibration X: avg=4.9200, frames=50[0m
+[0;32mI (5184) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (5194) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (5194) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (5194) crater_fw: vCalcTask: CALIBRATION state, time=4923576[0m
+[0;32mI (5204) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (5214) crater_fw: vSensorTask: readings: (4.931035, 32.672413)[0m
+[0;32mI (5214) crater_fw: vCalcTask: calibration Y: avg=41.9939, frames=51[0m
+[0;32mI (5214) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (5224) crater_fw: vCalcTask: calibration X: avg=4.9199, frames=51[0m
+[0;32mI (5234) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (5244) crater_fw: vCalcTask: loop iteration, state=0[0m
+[0;32mI (5244) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (5254) crater_fw: vCalcTask: CALIBRATION state, time=4982082[0m
+[0;32mI (5254) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9310[0m
+[0;32mI (5264) crater_fw: vCalcTask: past 2s delay, starting calibration[0m
+[0;32mI (5274) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (5274) crater_fw: vCalcTask: calibration complete! envelope X=4.9199 Y=41.9939 Z=0.0000[0m
+[0;32mI (5304) crater_fw: vSensorTask: cycle 28 complete, sleeping ~28ms[0m
+[0;32mI (5304) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (5304) crater_fw: vSensorTask: === read cycle 29 ===[0m
+[0;32mI (5304) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (5314) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (5314) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (5324) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (5334) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (5344) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (5354) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (5354) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (5364) crater_fw: vSensorTask: Y raw=32.6552 cm[0m
+[0;32mI (5374) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (5364) crater_fw: vHeartbeatTask: cycle 11[0m
 .
+[0;32mI (5374) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (5384) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (5394) crater_fw: vSensorTask: readings: (4.913793, 32.655174)[0m
+[0;32mI (5394) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (5404) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (5404) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (5414) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6552[0m
+[0;32mI (5424) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (5424) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (5444) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (5444) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (5444) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (5454) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (5464) crater_fw: vCalcTask: NO_PROJ Y dist=32.6552, threshold=39.8942[0m
+[0;32mI (5474) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6552[0m
+[0;32mI (5484) crater_fw: vSensorTask: cycle 29 complete, sleeping ~28ms[0m
+[0;32mI (5484) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (5484) crater_fw: vSensorTask: === read cycle 30 ===[0m
+[0;32mI (5494) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6552, z=0.0000)[0m
+[0;32mI (5504) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (5524) crater_fw: vSensorTask: X raw=5.0172 cm[0m
+[0;32mI (5524) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (5524) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (5534) crater_fw: vCalcTask: NO_PROJ Y dist=32.6552, threshold=39.8942[0m
+[0;32mI (5544) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (5544) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6552[0m
+[0;32mI (5554) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (5554) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (5564) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6552, z=0.0000)[0m
+[0;32mI (5574) crater_fw: vSensorTask: readings: (5.017241, 32.672413)[0m
+[0;32mI (5584) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (5584) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (5584) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (5594) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (5604) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (5614) crater_fw: vSensorTask: X semaphore acquired, wrote x=5.0172[0m
+[0;32mI (5624) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (5624) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (5634) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (5644) crater_fw: vSensorTask: cycle 30 complete, sleeping ~28ms[0m
+[0;32mI (5644) crater_fw: vCalcTask: NO_PROJ X dist=5.0172, threshold=4.6739[0m
+[0;32mI (5644) crater_fw: vSensorTask: === read cycle 31 ===[0m
+[0;32mI (5654) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (5664) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (5674) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (5674) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (5684) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (5694) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (5694) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (5704) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (5704) crater_fw: vCalcTask: NO_PROJ X dist=5.0172, threshold=4.6739[0m
+[0;32mI (5714) crater_fw: vSensorTask: Y raw=32.6897 cm[0m
+[0;32mI (5714) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (5744) crater_fw: vSensorTask: readings: (4.913793, 32.689655)[0m
+[0;32mI (5744) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (5744) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (5744) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6897[0m
+[0;32mI (5754) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (5754) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (5774) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (5774) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (5774) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (5794) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (5794) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (5804) crater_fw: vSensorTask: cycle 31 complete, sleeping ~28ms[0m
+[0;32mI (5804) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (5814) crater_fw: vSensorTask: === read cycle 32 ===[0m
+[0;32mI (5824) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (5834) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (5834) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (5834) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (5844) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (5854) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (5864) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (5864) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (5874) crater_fw: vSensorTask: Y raw=32.6552 cm[0m
+[0;32mI (5874) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (5884) crater_fw: vHeartbeatTask: cycle 12[0m
 <3
+[0;32mI (5904) crater_fw: vSensorTask: readings: (4.913793, 32.655174)[0m
+[0;32mI (5904) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (5904) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (5904) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (5914) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6552[0m
+[0;32mI (5924) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (5934) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (5944) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (5944) crater_fw: vCalcTask: NO_PROJ Y dist=32.6552, threshold=39.8942[0m
+[0;32mI (5954) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6552[0m
+[0;32mI (5964) crater_fw: vSensorTask: cycle 32 complete, sleeping ~28ms[0m
+[0;32mI (5964) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (5964) crater_fw: vSensorTask: === read cycle 33 ===[0m
+[0;32mI (5974) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6552, z=0.0000)[0m
+[0;32mI (5984) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (5994) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (6004) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (6004) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (6014) crater_fw: vCalcTask: NO_PROJ Y dist=32.6552, threshold=39.8942[0m
+[0;32mI (6024) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (6024) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6552[0m
+[0;32mI (6024) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (6034) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (6044) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6552, z=0.0000)[0m
+[0;32mI (6054) crater_fw: vSensorTask: readings: (4.913793, 32.672413)[0m
+[0;32mI (6064) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (6064) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (6064) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (6074) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (6084) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (6094) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (6094) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (6094) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (6114) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (6114) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (6124) crater_fw: vSensorTask: cycle 33 complete, sleeping ~28ms[0m
+[0;32mI (6124) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (6134) crater_fw: vSensorTask: === read cycle 34 ===[0m
+[0;32mI (6144) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (6154) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (6154) crater_fw: vSensorTask: X raw=4.9310 cm[0m
+[0;32mI (6154) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (6174) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (6174) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (6184) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (6184) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (6194) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (6194) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (6224) crater_fw: vSensorTask: readings: (4.931035, 32.672413)[0m
+[0;32mI (6224) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (6224) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (6224) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (6234) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (6234) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (6244) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9310[0m
+[0;32mI (6254) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (6254) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (6274) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (6274) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (6284) crater_fw: vSensorTask: cycle 34 complete, sleeping ~28ms[0m
+[0;32mI (6284) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (6294) crater_fw: vSensorTask: === read cycle 35 ===[0m
+[0;32mI (6304) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (6314) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (6314) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (6314) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (6324) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (6334) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (6344) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (6344) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (6354) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (6354) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (6384) crater_fw: vSensorTask: readings: (4.913793, 32.672413)[0m
+[0;32mI (6384) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (6384) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (6384) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (6384) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (6394) crater_fw: vHeartbeatTask: cycle 13[0m
 .
+[0;32mI (6394) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (6414) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (6414) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (6414) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (6434) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (6444) crater_fw: vSensorTask: cycle 35 complete, sleeping ~28ms[0m
+[0;32mI (6444) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (6444) crater_fw: vSensorTask: === read cycle 36 ===[0m
+[0;32mI (6454) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (6454) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (6474) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (6474) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (6484) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (6494) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (6494) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (6504) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (6504) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (6514) crater_fw: vSensorTask: Y raw=32.6897 cm[0m
+[0;32mI (6514) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (6544) crater_fw: vSensorTask: readings: (4.913793, 32.689655)[0m
+[0;32mI (6544) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (6544) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (6544) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6897[0m
+[0;32mI (6554) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (6554) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (6574) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (6574) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (6574) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (6594) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (6594) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (6604) crater_fw: vSensorTask: cycle 36 complete, sleeping ~28ms[0m
+[0;32mI (6604) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (6614) crater_fw: vSensorTask: === read cycle 37 ===[0m
+[0;32mI (6624) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (6634) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (6634) crater_fw: vSensorTask: X raw=4.9310 cm[0m
+[0;32mI (6634) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (6644) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (6654) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (6664) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (6664) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (6674) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (6674) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (6704) crater_fw: vSensorTask: readings: (4.931035, 32.672413)[0m
+[0;32mI (6704) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (6704) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (6704) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (6704) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (6714) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (6724) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9310[0m
+[0;32mI (6734) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (6734) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (6744) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (6754) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (6764) crater_fw: vSensorTask: cycle 37 complete, sleeping ~28ms[0m
+[0;32mI (6764) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (6764) crater_fw: vSensorTask: === read cycle 38 ===[0m
+[0;32mI (6784) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (6784) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (6794) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (6794) crater_fw: vSensorTask: X raw=4.9310 cm[0m
+[0;32mI (6804) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (6814) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (6824) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (6824) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (6834) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (6834) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (6854) crater_fw: vSensorTask: readings: (4.931035, 32.672413)[0m
+[0;32mI (6854) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (6854) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (6864) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (6864) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (6884) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (6884) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9310[0m
+[0;32mI (6894) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (6894) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (6904) crater_fw: vHeartbeatTask: cycle 14[0m
+<3
+[0;32mI (6914) crater_fw: vSensorTask: cycle 38 complete, sleeping ~28ms[0m
+[0;32mI (6904) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (6914) crater_fw: vSensorTask: === read cycle 39 ===[0m
+[0;32mI (6924) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (6934) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (6934) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (6944) crater_fw: vSensorTask: X raw=4.9310 cm[0m
+[0;32mI (6964) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (6964) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (6974) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (6974) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (6974) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (6984) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (6994) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (7004) crater_fw: vSensorTask: readings: (4.931035, 32.672413)[0m
+[0;32mI (7004) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (7004) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (7024) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (7024) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (7034) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (7034) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (7044) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9310[0m
+[0;32mI (7054) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (7054) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (7064) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (7074) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (7084) crater_fw: vSensorTask: cycle 39 complete, sleeping ~28ms[0m
+[0;32mI (7084) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (7094) crater_fw: vSensorTask: === read cycle 40 ===[0m
+[0;32mI (7104) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (7104) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (7114) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (7114) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (7124) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (7134) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (7144) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (7144) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (7154) crater_fw: vSensorTask: Y raw=32.7069 cm[0m
+[0;32mI (7154) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (7174) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (7174) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (7184) crater_fw: vSensorTask: readings: (4.913793, 32.706898)[0m
+[0;32mI (7184) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (7184) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (7194) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (7204) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.7069[0m
+[0;32mI (7204) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (7214) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (7224) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (7224) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (7244) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (7244) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (7254) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (7264) crater_fw: vCalcTask: NO_PROJ Y dist=32.7069, threshold=39.8942[0m
+[0;32mI (7264) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.7069[0m
+[0;32mI (7274) crater_fw: vSensorTask: cycle 40 complete, sleeping ~28ms[0m
+[0;32mI (7274) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (7284) crater_fw: vSensorTask: === read cycle 41 ===[0m
+[0;32mI (7294) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.7069, z=0.0000)[0m
+[0;32mI (7294) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (7314) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (7314) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (7314) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (7324) crater_fw: vCalcTask: NO_PROJ Y dist=32.7069, threshold=39.8942[0m
+[0;32mI (7334) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.7069[0m
+[0;32mI (7344) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (7344) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (7354) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (7354) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.7069, z=0.0000)[0m
+[0;32mI (7374) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (7374) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (7384) crater_fw: vSensorTask: readings: (4.913793, 32.672413)[0m
+[0;32mI (7384) crater_fw: vCalcTask: NO_PROJ Y dist=32.7069, threshold=39.8942[0m
+[0;32mI (7384) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (7394) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.7069[0m
+[0;32mI (7404) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (7404) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (7414) crater_fw: vHeartbeatTask: cycle 15[0m
+.
+[0;32mI (7424) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.7069, z=0.0000)[0m
+[0;32mI (7414) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (7444) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (7444) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (7444) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (7454) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (7464) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (7474) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (7484) crater_fw: vSensorTask: cycle 41 complete, sleeping ~28ms[0m
+[0;32mI (7484) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (7484) crater_fw: vSensorTask: === read cycle 42 ===[0m
+[0;32mI (7494) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (7504) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (7514) crater_fw: vSensorTask: X raw=4.9310 cm[0m
+[0;32mI (7524) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (7524) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (7534) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (7544) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (7544) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (7554) crater_fw: vSensorTask: Y raw=32.7414 cm[0m
+[0;32mI (7554) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (7564) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (7574) crater_fw: vSensorTask: readings: (4.931035, 32.741379)[0m
+[0;32mI (7584) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (7584) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (7584) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (7594) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.7414[0m
+[0;32mI (7604) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (7614) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9310[0m
+[0;32mI (7614) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (7614) crater_fw: vCalcTask: NO_PROJ Y dist=32.7414, threshold=39.8942[0m
+[0;32mI (7634) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.7414[0m
+[0;32mI (7634) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (7644) crater_fw: vSensorTask: cycle 42 complete, sleeping ~28ms[0m
+[0;32mI (7644) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.7414, z=0.0000)[0m
+[0;32mI (7654) crater_fw: vSensorTask: === read cycle 43 ===[0m
+[0;32mI (7664) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (7674) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (7674) crater_fw: vSensorTask: X raw=4.9310 cm[0m
+[0;32mI (7674) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (7694) crater_fw: vCalcTask: NO_PROJ Y dist=32.7414, threshold=39.8942[0m
+[0;32mI (7694) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.7414[0m
+[0;32mI (7704) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (7704) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (7714) crater_fw: vSensorTask: Y raw=32.6897 cm[0m
+[0;32mI (7714) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.7414, z=0.0000)[0m
+[0;32mI (7744) crater_fw: vSensorTask: readings: (4.931035, 32.689655)[0m
+[0;32mI (7744) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (7744) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (7744) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6897[0m
+[0;32mI (7754) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (7754) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (7764) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9310[0m
+[0;32mI (7774) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (7774) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (7794) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (7794) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (7804) crater_fw: vSensorTask: cycle 43 complete, sleeping ~28ms[0m
+[0;32mI (7804) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (7814) crater_fw: vSensorTask: === read cycle 44 ===[0m
+[0;32mI (7824) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (7834) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (7834) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (7834) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (7844) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (7854) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (7864) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (7864) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (7874) crater_fw: vSensorTask: Y raw=32.6897 cm[0m
+[0;32mI (7874) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (7904) crater_fw: vSensorTask: readings: (4.913793, 32.689655)[0m
+[0;32mI (7904) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (7904) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (7904) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6897[0m
+[0;32mI (7904) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (7914) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (7924) crater_fw: vHeartbeatTask: cycle 16[0m
+<3
+[0;32mI (7924) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (7934) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (7934) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (7954) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (7964) crater_fw: vSensorTask: cycle 44 complete, sleeping ~28ms[0m
+[0;32mI (7964) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (7964) crater_fw: vSensorTask: === read cycle 45 ===[0m
+[0;32mI (7974) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (7984) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (7994) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (7994) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (8004) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (8014) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (8014) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (8024) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (8024) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (8034) crater_fw: vSensorTask: Y raw=32.6897 cm[0m
+[0;32mI (8034) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (8064) crater_fw: vSensorTask: readings: (4.913793, 32.689655)[0m
+[0;32mI (8064) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (8064) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (8064) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6897[0m
+[0;32mI (8074) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (8074) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (8094) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (8094) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (8094) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (8114) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (8114) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (8124) crater_fw: vSensorTask: cycle 45 complete, sleeping ~28ms[0m
+[0;32mI (8124) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (8134) crater_fw: vSensorTask: === read cycle 46 ===[0m
+[0;32mI (8144) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (8154) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (8154) crater_fw: vSensorTask: X raw=4.9310 cm[0m
+[0;32mI (8154) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (8164) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (8174) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (8184) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (8184) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (8194) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (8194) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (8224) crater_fw: vSensorTask: readings: (4.931035, 32.672413)[0m
+[0;32mI (8224) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (8224) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (8224) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (8224) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (8234) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (8244) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9310[0m
+[0;32mI (8254) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (8254) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (8264) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (8274) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (8284) crater_fw: vSensorTask: cycle 46 complete, sleeping ~28ms[0m
+[0;32mI (8284) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (8284) crater_fw: vSensorTask: === read cycle 47 ===[0m
+[0;32mI (8304) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (8304) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (8314) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (8314) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (8324) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (8334) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (8344) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (8344) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (8354) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (8354) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (8374) crater_fw: vSensorTask: readings: (4.913793, 32.672413)[0m
+[0;32mI (8374) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (8374) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (8384) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (8384) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (8404) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (8404) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (8414) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (8414) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (8424) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (8434) crater_fw: vHeartbeatTask: cycle 17[0m
+.
+[0;32mI (8434) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (8434) crater_fw: vSensorTask: cycle 47 complete, sleeping ~28ms[0m
+[0;32mI (8444) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (8454) crater_fw: vSensorTask: === read cycle 48 ===[0m
+[0;32mI (8464) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (8474) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (8474) crater_fw: vSensorTask: X raw=4.9310 cm[0m
+[0;32mI (8474) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (8494) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (8494) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (8504) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (8504) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (8514) crater_fw: vSensorTask: Y raw=32.6897 cm[0m
+[0;32mI (8514) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (8544) crater_fw: vSensorTask: readings: (4.931035, 32.689655)[0m
+[0;32mI (8544) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (8544) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (8544) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6897[0m
+[0;32mI (8554) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (8554) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (8564) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9310[0m
+[0;32mI (8574) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (8574) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (8584) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (8594) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (8604) crater_fw: vSensorTask: cycle 48 complete, sleeping ~28ms[0m
+[0;32mI (8604) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (8614) crater_fw: vSensorTask: === read cycle 49 ===[0m
+[0;32mI (8624) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (8624) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (8634) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (8634) crater_fw: vSensorTask: X raw=4.9310 cm[0m
+[0;32mI (8644) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (8654) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (8664) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (8664) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (8674) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (8674) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (8694) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (8694) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (8704) crater_fw: vSensorTask: readings: (4.931035, 32.672413)[0m
+[0;32mI (8704) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (8704) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (8714) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (8724) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (8724) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (8734) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (8744) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (8744) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9310[0m
+[0;32mI (8764) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (8764) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (8774) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (8784) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (8784) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (8794) crater_fw: vSensorTask: cycle 49 complete, sleeping ~28ms[0m
+[0;32mI (8794) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (8804) crater_fw: vSensorTask: === read cycle 50 ===[0m
+[0;32mI (8814) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (8814) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (8834) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (8834) crater_fw: vSensorTask: X raw=4.9310 cm[0m
+[0;32mI (8834) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (8844) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (8854) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (8864) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (8864) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (8874) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (8874) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (8894) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (8894) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (8904) crater_fw: vSensorTask: readings: (4.931035, 32.672413)[0m
+[0;32mI (8904) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (8904) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (8914) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (8924) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (8924) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (8934) crater_fw: vHeartbeatTask: cycle 18[0m
+<3
+[0;32mI (8944) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (8934) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (8964) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (8964) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9310[0m
+[0;32mI (8964) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (8974) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (8984) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (8994) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (9004) crater_fw: vSensorTask: cycle 50 complete, sleeping ~28ms[0m
+[0;32mI (9004) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (9004) crater_fw: vSensorTask: === read cycle 51 ===[0m
+[0;32mI (9014) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (9024) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (9034) crater_fw: vSensorTask: X raw=4.9310 cm[0m
+[0;32mI (9044) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (9044) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (9054) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (9064) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (9064) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (9074) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (9074) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (9084) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (9094) crater_fw: vSensorTask: readings: (4.931035, 32.672413)[0m
+[0;32mI (9104) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (9104) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (9104) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (9114) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (9124) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (9134) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9310[0m
+[0;32mI (9134) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (9134) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (9154) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (9154) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (9164) crater_fw: vSensorTask: cycle 51 complete, sleeping ~28ms[0m
+[0;32mI (9164) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (9174) crater_fw: vSensorTask: === read cycle 52 ===[0m
+[0;32mI (9184) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (9194) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (9194) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (9204) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (9214) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (9214) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (9224) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (9224) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (9234) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (9234) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (9264) crater_fw: vSensorTask: readings: (4.913793, 32.672413)[0m
+[0;32mI (9264) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (9264) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (9264) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (9274) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (9274) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (9284) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (9294) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (9294) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (9314) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (9314) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (9324) crater_fw: vSensorTask: cycle 52 complete, sleeping ~28ms[0m
+[0;32mI (9324) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (9334) crater_fw: vSensorTask: === read cycle 53 ===[0m
+[0;32mI (9344) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (9354) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (9354) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (9354) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (9364) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (9374) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (9384) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (9384) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (9394) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (9394) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (9424) crater_fw: vSensorTask: readings: (4.913793, 32.672413)[0m
+[0;32mI (9424) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (9424) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (9424) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (9424) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (9434) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (9444) crater_fw: vHeartbeatTask: cycle 19[0m
+.
+[0;32mI (9444) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (9454) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (9454) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (9474) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (9484) crater_fw: vSensorTask: cycle 53 complete, sleeping ~28ms[0m
+[0;32mI (9484) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (9484) crater_fw: vSensorTask: === read cycle 54 ===[0m
+[0;32mI (9494) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (9504) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (9514) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (9514) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (9524) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (9534) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (9534) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (9544) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (9544) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (9554) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (9554) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (9584) crater_fw: vSensorTask: readings: (4.913793, 32.672413)[0m
+[0;32mI (9584) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (9584) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (9584) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (9594) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (9594) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (9614) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (9614) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (9614) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (9634) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (9634) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (9644) crater_fw: vSensorTask: cycle 54 complete, sleeping ~28ms[0m
+[0;32mI (9644) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (9654) crater_fw: vSensorTask: === read cycle 55 ===[0m
+[0;32mI (9664) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (9674) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (9674) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (9674) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (9684) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (9694) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (9704) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (9704) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (9714) crater_fw: vSensorTask: Y raw=32.6552 cm[0m
+[0;32mI (9714) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (9744) crater_fw: vSensorTask: readings: (4.913793, 32.655174)[0m
+[0;32mI (9744) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (9744) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (9744) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6552[0m
+[0;32mI (9744) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (9754) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (9764) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (9774) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (9774) crater_fw: vCalcTask: NO_PROJ Y dist=32.6552, threshold=39.8942[0m
+[0;32mI (9784) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6552[0m
+[0;32mI (9794) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (9804) crater_fw: vSensorTask: cycle 55 complete, sleeping ~28ms[0m
+[0;32mI (9804) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6552, z=0.0000)[0m
+[0;32mI (9804) crater_fw: vSensorTask: === read cycle 56 ===[0m
+[0;32mI (9824) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (9824) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (9834) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (9834) crater_fw: vSensorTask: X raw=4.9310 cm[0m
+[0;32mI (9844) crater_fw: vCalcTask: NO_PROJ Y dist=32.6552, threshold=39.8942[0m
+[0;32mI (9854) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6552[0m
+[0;32mI (9864) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (9864) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (9874) crater_fw: vSensorTask: Y raw=32.6897 cm[0m
+[0;32mI (9874) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6552, z=0.0000)[0m
+[0;32mI (9894) crater_fw: vSensorTask: readings: (4.931035, 32.689655)[0m
+[0;32mI (9894) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (9894) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (9904) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (9904) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6897[0m
+[0;32mI (9924) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (9924) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9310[0m
+[0;32mI (9934) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (9934) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (9944) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (9954) crater_fw: vHeartbeatTask: cycle 20[0m
+<3
+[0;32mI (9954) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (9954) crater_fw: vSensorTask: cycle 56 complete, sleeping ~28ms[0m
+[0;32mI (9964) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (9974) crater_fw: vSensorTask: === read cycle 57 ===[0m
+[0;32mI (9984) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (9994) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (9994) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (9994) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (10014) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (10014) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (10024) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (10024) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (10034) crater_fw: vSensorTask: Y raw=32.6897 cm[0m
+[0;32mI (10034) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (10064) crater_fw: vSensorTask: readings: (4.913793, 32.689655)[0m
+[0;32mI (10064) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (10064) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (10064) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6897[0m
+[0;32mI (10074) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (10074) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (10094) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (10094) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (10094) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (10114) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (10114) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (10124) crater_fw: vSensorTask: cycle 57 complete, sleeping ~28ms[0m
+[0;32mI (10124) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (10134) crater_fw: vSensorTask: === read cycle 58 ===[0m
+[0;32mI (10144) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (10154) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (10154) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (10154) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (10174) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (10174) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (10184) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (10184) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (10194) crater_fw: vSensorTask: Y raw=32.6897 cm[0m
+[0;32mI (10194) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (10224) crater_fw: vSensorTask: readings: (4.913793, 32.689655)[0m
+[0;32mI (10224) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (10224) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (10224) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6897[0m
+[0;32mI (10234) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (10234) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (10254) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (10254) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (10254) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (10274) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (10274) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (10284) crater_fw: vSensorTask: cycle 58 complete, sleeping ~28ms[0m
+[0;32mI (10284) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (10294) crater_fw: vSensorTask: === read cycle 59 ===[0m
+[0;32mI (10304) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (10314) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (10314) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (10314) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (10334) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (10334) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (10344) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (10344) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (10354) crater_fw: vSensorTask: Y raw=32.6897 cm[0m
+[0;32mI (10354) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (10384) crater_fw: vSensorTask: readings: (4.913793, 32.689655)[0m
+[0;32mI (10384) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (10384) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (10384) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6897[0m
+[0;32mI (10394) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (10394) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (10414) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (10414) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (10414) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (10434) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (10434) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (10444) crater_fw: vSensorTask: cycle 59 complete, sleeping ~28ms[0m
+[0;32mI (10444) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (10454) crater_fw: vHeartbeatTask: cycle 21[0m
+.
+[0;32mI (10454) crater_fw: vSensorTask: === read cycle 60 ===[0m
+[0;32mI (10474) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (10474) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (10474) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (10484) crater_fw: vSensorTask: X raw=4.9310 cm[0m
+[0;32mI (10484) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (10504) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (10504) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (10514) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (10514) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (10524) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (10544) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (10544) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (10544) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (10554) crater_fw: vSensorTask: readings: (4.931035, 32.672413)[0m
+[0;32mI (10554) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (10564) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (10574) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (10574) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (10584) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (10594) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (10604) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9310[0m
+[0;32mI (10614) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (10614) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (10614) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (10634) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (10634) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (10644) crater_fw: vSensorTask: cycle 60 complete, sleeping ~28ms[0m
+[0;32mI (10644) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (10654) crater_fw: vSensorTask: === read cycle 61 ===[0m
+[0;32mI (10654) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (10664) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (10684) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (10684) crater_fw: vSensorTask: X raw=4.9310 cm[0m
+[0;32mI (10684) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (10694) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (10704) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (10714) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (10714) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (10724) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (10724) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (10754) crater_fw: vSensorTask: readings: (4.931035, 32.672413)[0m
+[0;32mI (10754) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (10754) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (10754) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (10754) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (10764) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (10774) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9310[0m
+[0;32mI (10784) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (10784) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (10794) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (10804) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (10814) crater_fw: vSensorTask: cycle 61 complete, sleeping ~28ms[0m
+[0;32mI (10814) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (10814) crater_fw: vSensorTask: === read cycle 62 ===[0m
+[0;32mI (10834) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (10834) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (10844) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (10844) crater_fw: vSensorTask: X raw=4.9310 cm[0m
+[0;32mI (10854) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (10864) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (10874) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (10874) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (10884) crater_fw: vSensorTask: Y raw=32.6552 cm[0m
+[0;32mI (10884) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (10904) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (10904) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (10914) crater_fw: vSensorTask: readings: (4.931035, 32.655174)[0m
+[0;32mI (10914) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (10914) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (10924) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (10934) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6552[0m
+[0;32mI (10934) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (10944) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (10954) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (10954) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9310[0m
+[0;32mI (10964) crater_fw: vHeartbeatTask: cycle 22[0m
+<3
+[0;32mI (10974) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (10974) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (10994) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (10994) crater_fw: vCalcTask: NO_PROJ Y dist=32.6552, threshold=39.8942[0m
+[0;32mI (11004) crater_fw: vSensorTask: cycle 62 complete, sleeping ~28ms[0m
+[0;32mI (11004) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6552[0m
+[0;32mI (11014) crater_fw: vSensorTask: === read cycle 63 ===[0m
+[0;32mI (11024) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (11024) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (11034) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6552, z=0.0000)[0m
+[0;32mI (11044) crater_fw: vSensorTask: X raw=4.9310 cm[0m
+[0;32mI (11054) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (11054) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (11064) crater_fw: vCalcTask: NO_PROJ Y dist=32.6552, threshold=39.8942[0m
+[0;32mI (11074) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (11074) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6552[0m
+[0;32mI (11084) crater_fw: vSensorTask: Y raw=32.6897 cm[0m
+[0;32mI (11084) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (11094) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6552, z=0.0000)[0m
+[0;32mI (11114) crater_fw: vSensorTask: readings: (4.931035, 32.689655)[0m
+[0;32mI (11114) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (11114) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (11124) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (11124) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6897[0m
+[0;32mI (11134) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (11144) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9310[0m
+[0;32mI (11154) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (11154) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (11164) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (11174) crater_fw: vSensorTask: cycle 63 complete, sleeping ~28ms[0m
+[0;32mI (11174) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (11184) crater_fw: vSensorTask: === read cycle 64 ===[0m
+[0;32mI (11184) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (11194) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (11214) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (11214) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (11214) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (11224) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (11234) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (11234) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (11244) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (11244) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (11254) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (11274) crater_fw: vSensorTask: readings: (4.913793, 32.672413)[0m
+[0;32mI (11274) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (11274) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (11284) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (11284) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (11294) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (11304) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (11314) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (11314) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (11324) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (11334) crater_fw: vSensorTask: cycle 64 complete, sleeping ~28ms[0m
+[0;32mI (11334) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (11344) crater_fw: vSensorTask: === read cycle 65 ===[0m
+[0;32mI (11344) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (11354) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (11374) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (11374) crater_fw: vSensorTask: X raw=4.9310 cm[0m
+[0;32mI (11374) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (11384) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (11394) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (11394) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (11404) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (11404) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (11414) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (11434) crater_fw: vSensorTask: readings: (4.931035, 32.672413)[0m
+[0;32mI (11434) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (11434) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (11444) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (11444) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (11454) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (11464) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9310[0m
+[0;32mI (11474) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (11474) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (11484) crater_fw: vHeartbeatTask: cycle 23[0m
+.
+[0;32mI (11494) crater_fw: vSensorTask: cycle 65 complete, sleeping ~28ms[0m
+[0;32mI (11484) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (11494) crater_fw: vSensorTask: === read cycle 66 ===[0m
+[0;32mI (11504) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (11514) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (11514) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (11524) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (11544) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (11544) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (11554) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (11554) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (11564) crater_fw: vSensorTask: Y raw=32.6897 cm[0m
+[0;32mI (11564) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (11574) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (11584) crater_fw: vSensorTask: readings: (4.913793, 32.689655)[0m
+[0;32mI (11584) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (11594) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (11604) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (11604) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6897[0m
+[0;32mI (11614) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (11614) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (11634) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (11634) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (11634) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (11654) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (11654) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (11664) crater_fw: vSensorTask: cycle 66 complete, sleeping ~28ms[0m
+[0;32mI (11664) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (11674) crater_fw: vSensorTask: === read cycle 67 ===[0m
+[0;32mI (11684) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (11694) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (11694) crater_fw: vSensorTask: X raw=4.9310 cm[0m
+[0;32mI (11694) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (11714) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (11714) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (11724) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (11724) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (11734) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (11734) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (11764) crater_fw: vSensorTask: readings: (4.931035, 32.672413)[0m
+[0;32mI (11764) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (11764) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (11764) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (11774) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (11774) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (11794) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9310[0m
+[0;32mI (11794) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (11794) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (11814) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (11814) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (11824) crater_fw: vSensorTask: cycle 67 complete, sleeping ~28ms[0m
+[0;32mI (11824) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (11834) crater_fw: vSensorTask: === read cycle 68 ===[0m
+[0;32mI (11844) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (11854) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (11854) crater_fw: vSensorTask: X raw=4.9310 cm[0m
+[0;32mI (11854) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (11874) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (11874) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (11884) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (11884) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (11894) crater_fw: vSensorTask: Y raw=32.6897 cm[0m
+[0;32mI (11894) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (11924) crater_fw: vSensorTask: readings: (4.931035, 32.689655)[0m
+[0;32mI (11924) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (11924) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (11924) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6897[0m
+[0;32mI (11934) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (11934) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (11954) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9310[0m
+[0;32mI (11954) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (11954) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (11974) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (11974) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (11984) crater_fw: vSensorTask: cycle 68 complete, sleeping ~28ms[0m
+[0;32mI (11984) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (11994) crater_fw: vHeartbeatTask: cycle 24[0m
+<3
+[0;32mI (11994) crater_fw: vSensorTask: === read cycle 69 ===[0m
+[0;32mI (12014) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (12014) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (12014) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (12024) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (12034) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (12044) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (12044) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (12054) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (12054) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (12064) crater_fw: vSensorTask: Y raw=32.6897 cm[0m
+[0;32mI (12084) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (12084) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (12084) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (12094) crater_fw: vSensorTask: readings: (4.913793, 32.689655)[0m
+[0;32mI (12094) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (12104) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (12114) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (12114) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6897[0m
+[0;32mI (12124) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (12134) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (12144) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (12154) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (12154) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (12154) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (12174) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (12174) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (12184) crater_fw: vSensorTask: cycle 69 complete, sleeping ~28ms[0m
+[0;32mI (12184) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (12194) crater_fw: vSensorTask: === read cycle 70 ===[0m
+[0;32mI (12204) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (12204) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (12224) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (12224) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (12224) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (12234) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (12244) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (12254) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (12254) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (12264) crater_fw: vSensorTask: Y raw=32.6897 cm[0m
+[0;32mI (12264) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (12294) crater_fw: vSensorTask: readings: (4.913793, 32.689655)[0m
+[0;32mI (12294) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (12294) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (12294) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6897[0m
+[0;32mI (12294) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (12304) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (12314) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (12324) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (12324) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (12334) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (12344) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (12354) crater_fw: vSensorTask: cycle 70 complete, sleeping ~28ms[0m
+[0;32mI (12354) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (12354) crater_fw: vSensorTask: === read cycle 71 ===[0m
+[0;32mI (12374) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (12374) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (12384) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (12384) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (12394) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (12404) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (12414) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (12414) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (12424) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (12424) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (12454) crater_fw: vSensorTask: readings: (4.913793, 32.672413)[0m
+[0;32mI (12454) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (12454) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (12454) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (12454) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (12464) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (12474) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (12484) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (12484) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (12494) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (12504) crater_fw: vHeartbeatTask: cycle 25[0m
+.
+[0;32mI (12514) crater_fw: vSensorTask: cycle 71 complete, sleeping ~28ms[0m
+[0;32mI (12504) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (12514) crater_fw: vSensorTask: === read cycle 72 ===[0m
+[0;32mI (12524) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (12534) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (12544) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (12554) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (12554) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (12564) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (12574) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (12574) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (12584) crater_fw: vSensorTask: Y raw=32.6897 cm[0m
+[0;32mI (12584) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (12594) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (12604) crater_fw: vSensorTask: readings: (4.913793, 32.689655)[0m
+[0;32mI (12614) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (12614) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (12614) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (12624) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6897[0m
+[0;32mI (12634) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (12644) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (12654) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (12654) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (12664) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (12674) crater_fw: vSensorTask: cycle 72 complete, sleeping ~28ms[0m
+[0;32mI (12674) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (12674) crater_fw: vSensorTask: === read cycle 73 ===[0m
+[0;32mI (12684) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (12694) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (12704) crater_fw: vSensorTask: X raw=4.9310 cm[0m
+[0;32mI (12714) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (12714) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (12724) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (12734) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (12734) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (12744) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (12744) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (12754) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (12764) crater_fw: vSensorTask: readings: (4.931035, 32.672413)[0m
+[0;32mI (12774) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (12774) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (12774) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (12784) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (12794) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (12804) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9310[0m
+[0;32mI (12814) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (12814) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (12824) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (12834) crater_fw: vSensorTask: cycle 73 complete, sleeping ~28ms[0m
+[0;32mI (12834) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (12834) crater_fw: vSensorTask: === read cycle 74 ===[0m
+[0;32mI (12844) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (12854) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (12864) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (12874) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (12874) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (12884) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (12894) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (12894) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (12904) crater_fw: vSensorTask: Y raw=32.6897 cm[0m
+[0;32mI (12904) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (12914) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (12924) crater_fw: vSensorTask: readings: (4.913793, 32.689655)[0m
+[0;32mI (12934) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (12934) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (12934) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (12944) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6897[0m
+[0;32mI (12954) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (12964) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (12974) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (12974) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (12984) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (12994) crater_fw: vSensorTask: cycle 74 complete, sleeping ~28ms[0m
+[0;32mI (12994) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (12994) crater_fw: vSensorTask: === read cycle 75 ===[0m
+[0;32mI (13004) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (13014) crater_fw: vHeartbeatTask: cycle 26[0m
+<3
+[0;32mI (13014) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (13034) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (13034) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (13034) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (13044) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (13054) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (13064) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (13064) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (13074) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (13074) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (13104) crater_fw: vSensorTask: readings: (4.913793, 32.672413)[0m
+[0;32mI (13104) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (13104) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (13104) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (13104) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (13114) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (13124) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (13134) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (13134) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (13144) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (13154) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (13164) crater_fw: vSensorTask: cycle 75 complete, sleeping ~28ms[0m
+[0;32mI (13164) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (13174) crater_fw: vSensorTask: === read cycle 76 ===[0m
+[0;32mI (13184) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (13184) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (13194) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (13194) crater_fw: vSensorTask: X raw=4.9310 cm[0m
+[0;32mI (13204) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (13214) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (13224) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (13224) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (13234) crater_fw: vSensorTask: Y raw=32.6897 cm[0m
+[0;32mI (13234) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (13264) crater_fw: vSensorTask: readings: (4.931035, 32.689655)[0m
+[0;32mI (13264) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (13264) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (13264) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6897[0m
+[0;32mI (13264) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (13274) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (13284) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9310[0m
+[0;32mI (13294) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (13294) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (13304) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (13314) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (13324) crater_fw: vSensorTask: cycle 76 complete, sleeping ~28ms[0m
+[0;32mI (13324) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (13324) crater_fw: vSensorTask: === read cycle 77 ===[0m
+[0;32mI (13344) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (13344) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (13354) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (13354) crater_fw: vSensorTask: X raw=4.9310 cm[0m
+[0;32mI (13364) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (13374) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (13384) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (13384) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (13394) crater_fw: vSensorTask: Y raw=32.6897 cm[0m
+[0;32mI (13394) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (13424) crater_fw: vSensorTask: readings: (4.931035, 32.689655)[0m
+[0;32mI (13424) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (13424) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (13424) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6897[0m
+[0;32mI (13424) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (13434) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (13444) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9310[0m
+[0;32mI (13454) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (13454) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (13464) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (13474) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (13484) crater_fw: vSensorTask: cycle 77 complete, sleeping ~28ms[0m
+[0;32mI (13484) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (13484) crater_fw: vSensorTask: === read cycle 78 ===[0m
+[0;32mI (13504) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (13504) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (13514) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (13514) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (13524) crater_fw: vHeartbeatTask: cycle 27[0m
+.
+[0;32mI (13524) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (13544) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (13544) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (13554) crater_fw: vSensorTask: Y raw=32.6897 cm[0m
+[0;32mI (13554) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (13564) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (13574) crater_fw: vSensorTask: readings: (4.913793, 32.689655)[0m
+[0;32mI (13584) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (13584) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (13584) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (13594) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6897[0m
+[0;32mI (13604) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (13614) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (13624) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (13624) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (13634) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (13644) crater_fw: vSensorTask: cycle 78 complete, sleeping ~28ms[0m
+[0;32mI (13644) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (13644) crater_fw: vSensorTask: === read cycle 79 ===[0m
+[0;32mI (13654) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (13664) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (13674) crater_fw: vSensorTask: X raw=4.9310 cm[0m
+[0;32mI (13684) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (13684) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (13694) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (13704) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (13704) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (13714) crater_fw: vSensorTask: Y raw=32.6897 cm[0m
+[0;32mI (13714) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (13724) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (13734) crater_fw: vSensorTask: readings: (4.931035, 32.689655)[0m
+[0;32mI (13744) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (13744) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (13744) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (13754) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6897[0m
+[0;32mI (13764) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (13774) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9310[0m
+[0;32mI (13784) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (13784) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (13794) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (13804) crater_fw: vSensorTask: cycle 79 complete, sleeping ~28ms[0m
+[0;32mI (13804) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (13804) crater_fw: vSensorTask: === read cycle 80 ===[0m
+[0;32mI (13814) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (13824) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (13834) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (13844) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (13844) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (13854) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (13864) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (13864) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (13874) crater_fw: vSensorTask: Y raw=32.6724 cm[0m
+[0;32mI (13874) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (13884) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (13894) crater_fw: vSensorTask: readings: (4.913793, 32.672413)[0m
+[0;32mI (13904) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (13904) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (13904) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (13914) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6724[0m
+[0;32mI (13924) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (13934) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (13944) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (13944) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (13954) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (13964) crater_fw: vSensorTask: cycle 80 complete, sleeping ~28ms[0m
+[0;32mI (13964) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (13964) crater_fw: vSensorTask: === read cycle 81 ===[0m
+[0;32mI (13974) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (13984) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (13994) crater_fw: vSensorTask: X raw=4.9310 cm[0m
+[0;32mI (14004) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (14004) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (14014) crater_fw: vCalcTask: NO_PROJ Y dist=32.6724, threshold=39.8942[0m
+[0;32mI (14024) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (14024) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6724[0m
+[0;32mI (14034) crater_fw: vSensorTask: Y raw=32.6897 cm[0m
+[0;32mI (14034) crater_fw: vHeartbeatTask: cycle 28[0m
+<3
+[0;32mI (14034) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (14054) crater_fw: vSensorTask: readings: (4.931035, 32.689655)[0m
+[0;32mI (14054) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6724, z=0.0000)[0m
+[0;32mI (14054) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (14074) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (14074) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6897[0m
+[0;32mI (14074) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (14084) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (14094) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9310[0m
+[0;32mI (14104) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (14104) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (14114) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (14124) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (14134) crater_fw: vSensorTask: cycle 81 complete, sleeping ~28ms[0m
+[0;32mI (14134) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (14144) crater_fw: vSensorTask: === read cycle 82 ===[0m
+[0;32mI (14154) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (14154) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (14164) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (14164) crater_fw: vSensorTask: X raw=4.9310 cm[0m
+[0;32mI (14174) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (14184) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (14194) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (14194) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (14204) crater_fw: vSensorTask: Y raw=32.7069 cm[0m
+[0;32mI (14204) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (14234) crater_fw: vSensorTask: readings: (4.931035, 32.706898)[0m
+[0;32mI (14234) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (14234) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (14234) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.7069[0m
+[0;32mI (14234) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (14244) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (14254) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9310[0m
+[0;32mI (14264) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (14264) crater_fw: vCalcTask: NO_PROJ Y dist=32.7069, threshold=39.8942[0m
+[0;32mI (14274) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.7069[0m
+[0;32mI (14284) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (14294) crater_fw: vSensorTask: cycle 82 complete, sleeping ~28ms[0m
+[0;32mI (14294) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.7069, z=0.0000)[0m
+[0;32mI (14304) crater_fw: vSensorTask: === read cycle 83 ===[0m
+[0;32mI (14314) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (14314) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (14324) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (14324) crater_fw: vSensorTask: X raw=4.9310 cm[0m
+[0;32mI (14334) crater_fw: vCalcTask: NO_PROJ Y dist=32.7069, threshold=39.8942[0m
+[0;32mI (14344) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.7069[0m
+[0;32mI (14354) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (14354) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (14364) crater_fw: vSensorTask: Y raw=32.6552 cm[0m
+[0;32mI (14364) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.7069, z=0.0000)[0m
+[0;32mI (14394) crater_fw: vSensorTask: readings: (4.931035, 32.655174)[0m
+[0;32mI (14394) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (14394) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (14394) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6552[0m
+[0;32mI (14394) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (14404) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (14414) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9310[0m
+[0;32mI (14424) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (14424) crater_fw: vCalcTask: NO_PROJ Y dist=32.6552, threshold=39.8942[0m
+[0;32mI (14434) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6552[0m
+[0;32mI (14444) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (14454) crater_fw: vSensorTask: cycle 83 complete, sleeping ~28ms[0m
+[0;32mI (14454) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6552, z=0.0000)[0m
+[0;32mI (14454) crater_fw: vSensorTask: === read cycle 84 ===[0m
+[0;32mI (14474) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (14474) crater_fw: vSensorTask: reading X sensor...[0m
+[0;32mI (14484) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (14484) crater_fw: vSensorTask: X raw=4.9138 cm[0m
+[0;32mI (14494) crater_fw: vCalcTask: NO_PROJ Y dist=32.6552, threshold=39.8942[0m
+[0;32mI (14504) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6552[0m
+[0;32mI (14514) crater_fw: vSensorTask: reading Y sensor...[0m
+[0;32mI (14514) crater_fw: vCalcTask: NO_PROJ X dist=4.9310, threshold=4.6739[0m
+[0;32mI (14524) crater_fw: vSensorTask: Y raw=32.6897 cm[0m
+[0;32mI (14524) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6552, z=0.0000)[0m
+[0;32mI (14544) crater_fw: vHeartbeatTask: cycle 29[0m
+.
+[0;32mI (14554) crater_fw: vSensorTask: readings: (4.913793, 32.689655)[0m
+[0;32mI (14554) crater_fw: vCalcTask: loop iteration, state=1[0m
+[0;32mI (14554) crater_fw: vSensorTask: acquiring Y semaphore...[0m
+[0;32mI (14554) crater_fw: vCalcTask: NO_PROJECTILE state[0m
+[0;32mI (14564) crater_fw: vSensorTask: Y semaphore acquired, wrote y=32.6897[0m
+[0;32mI (14574) crater_fw: vSensorTask: acquiring X semaphore...[0m
+[0;32mI (14584) crater_fw: vSensorTask: X semaphore acquired, wrote x=4.9138[0m
+[0;32mI (14594) crater_fw: vSensorTask: all semaphores released[0m
+[0;32mI (14594) crater_fw: vCalcTask: NO_PROJ Y dist=32.6897, threshold=39.8942[0m
+[0;32mI (14604) crater_fw: vCalcTask: NO_PROJ Y triggered! dist_y=32.6897[0m
+[0;32mI (14614) crater_fw: vSensorTask: cycle 84 complete, sleeping ~28ms[0m
+[0;32mI (14614) crater_fw: vCalcTask: NO_PROJ X dist=4.9138, threshold=4.6739[0m
+[0;32mI (14614) crater_fw: vSensorTask: === read cycle 85 ===[0m
+[0;32mI (14624) crater_fw: vCalcTask: NO_PROJ: not all axes triggered (x=0.0000, y=32.6897, z=0.0000)[0m
+[0;32mI (14634) crater_fw: vSensorTask: reading X sensor...[0m
 [0m
 Done
