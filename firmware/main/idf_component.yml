@@ -1,3 +1,4 @@
 dependencies:
   rjrp44/vl53l5cx: ^2.0.4
   espressif/esp-dsp: '*'
+  espp/lsm6dso: ^1.0.36
