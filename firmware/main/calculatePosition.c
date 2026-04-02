@@ -1,47 +1,31 @@
-#include "esp_dsp.h"
-#include "esp_log.h"
-#include "freertos/FreeRTOS.h"
-#include "hal/gpio_types.h"
-#include "vl53l0x.h"
-#include <stdio.h>
-
 #include <iostream>
 #include <cmath>
 
-#define I2C_PORT 0
-#define I2C_SDA 21
-#define I2C_SCL 22
-#define XSHUT_PIN 23
+struct Point2D {
+    float x;
+    float y;
+};
 
-void app_main(void) {
-  // Initialize the sensor
+Point2D calculate_landing_position(float distance, int i, int j) {
+    float fov_deg = 90; 
+    float sensor_height = 3.0f; // In inches from bottom of box (sand)
 
-  vl53l0x_t *sensor =
-      vl53l0x_config(I2C_PORT, I2C_SCL, I2C_SDA, XSHUT_PIN, 0x29, 1);
-  if (!sensor) {
-    ESP_LOGE("VL53L0X", "Failed to configure sensor");
-    return;
-  }
+    float fov_rad = fov_deg * (M_PI / 180.0);
+    
+    // Calculate the angle for this specific sub-sensor
+    // Center the indices so 3.5, 3.5 is the center of 0-7
+    float angle_x = ((static_cast<float>(i) - 3.5f) / 7.0f) * fov_rad;
+    float angle_y = ((static_cast<float>(j) - 3.5f) / 7.0f) * fov_rad;
 
-  const char *err = vl53l0x_init(sensor);
-  if (err) {
-    ESP_LOGE("VL53L0X", "Init failed: %s", err);
-    vl53l0x_end(sensor);
-    return;
-  }
+    // Calculate coordinates relative to the sensor
+    float x_rel = distance * std::sin(angle_x);
+    float z_rel = distance * std::cos(angle_x) * std::cos(angle_y);
+    
+    // Project to Box Coordinates
+    // Assuming sensor is EXACT middle of 9" side
+    Point2D landing_pos;
+    landing_pos.x = 4.75f + x_rel; 
+    landing_pos.y = z_rel;
 
-  // Start continuous ranging
-  vl53l0x_startContinuous(sensor, 0);
-
-  while (1) {
-    uint16_t range = vl53l0x_readRangeContinuousMillimeters(sensor);
-    if (range == 65535) {
-      ESP_LOGW("VL53L0X", "Out of range or timeout");
-    } else {
-      ESP_LOGI("VL53L0X", "Range: %d mm", range);
-    }
-    vTaskDelay(pdMS_TO_TICKS(100));
-  }
-
-  
+    return landing_pos;
 }
