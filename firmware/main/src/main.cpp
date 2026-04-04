@@ -8,10 +8,21 @@
 #include "hc_sr04.hpp"
 #include "portmacro.h"
 #include "soc/gpio_num.h"
+#include <lsm6dso.hpp>
 #include <math.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <unistd.h>
+
+#include <chrono>
+#include <cmath>
+#include <vector>
+
+#include "i2c.hpp"
+#include "kalman_filter.hpp"
+#include "logger.hpp"
+#include "lsm6dso.hpp"
+#include "madgwick_filter.hpp"
 #define X_TRIG_PIN 19                  //
 #define Y_TRIG_PIN 22                  //
 #define Y_ECHO_PIN 23                  //
@@ -603,63 +614,6 @@ void run_gyro() {
 
 // C++ is an ungodly language and main must be in C
 extern "C" {
-void app_main(void) {
-  ESP_LOGI(TAG, "app_main: ====== CRATER CREATOR FIRMWARE STARTING ======");
-  ESP_LOGI(TAG, "app_main: compiled %s %s", __DATE__, __TIME__);
-
-  ESP_LOGI(TAG, "app_main: creating heartbeat task");
-  xTaskCreate(vHeartbeatTask, "heartbeat", 2048, NULL, 5, NULL);
-
-  ESP_LOGI(TAG, "app_main: configuring sensors");
-  ESP_LOGI(TAG, "app_main: sensor X: trig=%d, echo=%d", X_TRIG_PIN, X_ECHO_PIN);
-  ESP_LOGI(TAG, "app_main: sensor Y: trig=%d, echo=%d", Y_TRIG_PIN, Y_ECHO_PIN);
-  static HCSR04 sensor_x = {.trig_pin = X_TRIG_PIN, .echo_pin = X_ECHO_PIN};
-  static HCSR04 sensor_y = {.trig_pin = Y_TRIG_PIN, .echo_pin = Y_ECHO_PIN};
-
-  ESP_LOGI(TAG, "app_main: initializing sensor data structs");
-  static SensorData sensor_data_x = {.sensor = &sensor_x,
-                                     .xSemaphore = NULL,
-                                     .distance_cm = 0.0f,
-                                     .last_updated_us = 0};
-
-  static SensorData sensor_data_y = {.sensor = &sensor_y,
-                                     .xSemaphore = NULL,
-                                     .distance_cm = 0.0f,
-                                     .last_updated_us = 0};
-
-  static SensorTaskArgs sensor_task_args = {
-      .sensor_data_x = &sensor_data_x,
-      .sensor_data_y = &sensor_data_y,
-      .sensor_data_z = NULL,
-  };
-
-  ESP_LOGI(TAG, "app_main: creating mutexes");
-  sensor_data_x.xSemaphore = xSemaphoreCreateMutex();
-  ESP_LOGI(TAG, "app_main: X mutex created: %p",
-           (void *)sensor_data_x.xSemaphore);
-  sensor_data_y.xSemaphore = xSemaphoreCreateMutex();
-  ESP_LOGI(TAG, "app_main: Y mutex created: %p",
-           (void *)sensor_data_y.xSemaphore);
-
-  if (!sensor_data_x.xSemaphore || !sensor_data_y.xSemaphore) {
-    ESP_LOGE(TAG, "app_main: FATAL - failed to create one or more mutexes!");
-  }
-
-  ESP_LOGI(TAG, "app_main: creating SensorTask (stack=2048, priority=5)");
-  xTaskCreate(vSensorTask, "SensorTask", 2048, (void *)&sensor_task_args, 5,
-              NULL);
-
-  static SensorData *sensor_data_array[2] = {&sensor_data_x, &sensor_data_y};
-
-  ESP_LOGI(TAG, "app_main: creating CalcTask (stack=2048, priority=5)");
-  xTaskCreate(vCalcTask, "CalcTask", 2048 * 5, (void *)&sensor_task_args, 5,
-              NULL);
-
-  ESP_LOGI(TAG, "app_main: all tasks created, free heap=%lu",
-           (unsigned long)esp_get_free_heap_size());
-  ESP_LOGI(TAG, "app_main: sensor_data_array[0]=%p [1]=%p [2]=%p",
-           (void *)sensor_data_array[0], (void *)sensor_data_array[1],
-           (void *)sensor_data_array[2]);
-  ESP_LOGI(TAG, "app_main: ====== INIT COMPLETE ======");
+run_gyro();
 }
 }
