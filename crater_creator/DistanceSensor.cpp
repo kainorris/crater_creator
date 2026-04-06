@@ -1,19 +1,18 @@
-#include <Adafruit_VL53L0X.h>
+#include "DistanceSensor.h"
+#include "base.h"
+#include <Wire.h>
 
-#define XSHUT_1 12
-#define XSHUT_2 13
-#define XSHUT_3 14
-
-Adafruit_VL53L0X sensor1, sensor2, sensor3;
-
-void setup() {
+void DistanceSensor::setup() {
   Serial.begin(115200);
   Wire.begin();
 
   // Hold all sensors in reset
-  pinMode(XSHUT_1, OUTPUT); digitalWrite(XSHUT_1, LOW);
-  pinMode(XSHUT_2, OUTPUT); digitalWrite(XSHUT_2, LOW);
-  pinMode(XSHUT_3, OUTPUT); digitalWrite(XSHUT_3, LOW);
+  pinMode(XSHUT_1, OUTPUT);
+  digitalWrite(XSHUT_1, LOW);
+  pinMode(XSHUT_2, OUTPUT);
+  digitalWrite(XSHUT_2, LOW);
+  pinMode(XSHUT_3, OUTPUT);
+  digitalWrite(XSHUT_3, LOW);
   delay(10);
 
   // Boot sensor 1, assign new address
@@ -32,7 +31,7 @@ void setup() {
   sensor3.begin(0x32);
 }
 
-void loop() {
+Point3D DistanceSensor::loop() {
   VL53L0X_RangingMeasurementData_t m1, m2, m3;
 
   sensor1.rangingTest(&m1, false);
