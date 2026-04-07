@@ -19,7 +19,6 @@ void loop() {
     Serial.println(accel.y);
     Serial.print("AccelZ: ");
     Serial.println(accel.z);
-    Serial.println("<3");
   }
   if (accel.z>=1.01 || accel.z<=0.99){ //A 0.01 difference in z acceleration usualy correlates to an impact.
   Serial.print("A@E#F:");
@@ -33,11 +32,13 @@ if (dist.x > 0 || dist.y > 0 || dist.z > 0) {
     Serial.println(dist.y);
     Serial.print("distZ: ");
     Serial.println(dist.z);
-    Serial.println("<3");
   }
   if (dist.z>=1.01 || dist.z<=0.99){ //A 0.01 difference in z disteration usualy correlates to an impact.
   Serial.print("A@E#F:");
   Serial.print(dist.z);
   }
+
+  // Heartbeat indicator but i made it cute
+  Serial.println("<3");
 
 }
