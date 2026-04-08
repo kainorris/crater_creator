@@ -5,13 +5,18 @@ DistanceSensor ds;
 Gyro gyro;
 
 void setup() {
+  Serial.begin(115200);
+  Wire.begin();
+  Serial.println("Start setup");
     ds.setup();
     gyro.setup();
+      Serial.println("End setup");
+
 }
 
 void loop() {
     Point3D dist = ds.loop(); //QUESTION: How should we deal with null cases in distance
-    Point3d accel = gyro.loop();
+    Point3D accel = gyro.loop();
   if (accel.x > 0 || accel.y > 0 || accel.z > 0) {
     Serial.print("AccelX: ");
     Serial.println(accel.x);

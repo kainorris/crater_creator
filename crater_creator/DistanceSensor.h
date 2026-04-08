@@ -3,9 +3,9 @@
 #include <Adafruit_VL53L0X.h>
 #include <Arduino.h>
 
-#define XSHUT_1 12
-#define XSHUT_2 13
-#define XSHUT_3 14
+#define XSHUT_1 32
+#define XSHUT_2 33
+// #define XSHUT_3 14
 
 class DistanceSensor {
 public:
@@ -13,5 +13,5 @@ public:
   Point3D loop();
 
 private:
-  Adafruit_VL53L0X sensor1, sensor2, sensor3;
+  Adafruit_VL53L0X sensor1, sensor2 /*, sensor3*/;
 };
