@@ -15,6 +15,8 @@ void Gyro::setup() {
   else {
     Serial.println("Could not connect to IMU.");
     Serial.println("Freezing");
+    for (;;)
+      ;
   }
 
   if (myIMU.initialize(BASIC_SETTINGS))
