@@ -1,8 +1,10 @@
 #include "DistanceSensor.h"
 #include "Gyro.h"
+#define IMPACT_DELAY 100
 
 DistanceSensor ds;
 Gyro gyro;
+int delay_lock = 0;
 
 void setup() {
   Serial.begin(115200);
@@ -19,14 +21,14 @@ void setup() {
 void loop() {
     // Point3D dist = ds.loop(); //QUESTION: How should we deal with null cases in distance
     Point3D accel = gyro.loop();
-  if (accel.x > 0.03 || accel.y > 0.03 || accel.z > 0.03) {
-    Serial.print("AccelX: ");
-    Serial.println(accel.x);
-    Serial.print("AccelY: ");
-    Serial.println(accel.y);
-    Serial.print("AccelZ: ");
-    Serial.println(accel.z);
-  }
+  // if (accel.x > 0.03 || accel.y > 0.03 || accel.z > 0.03) {
+  //   Serial.print("AccelX: ");
+  //   Serial.println(accel.x);
+  //   Serial.print("AccelY: ");
+  //   Serial.println(accel.y);
+  //   Serial.print("AccelZ: ");
+  //   Serial.println(accel.z);
+  // }
   if (accel.z>=1.01 || accel.z<=0.99){ //A 0.01 difference in z acceleration usualy correlates to an impact.
   // Serial.print("A@E#F:");
   // Serial.print(accel.z);
@@ -46,9 +48,23 @@ void loop() {
 
   // Heartbeat indicator but i made it cute
   // Serial.println("<3");
-  if (accel.mag()>0.05){
+   Serial.print("AccelX: ");
+  Serial.println(accel.x);
+  Serial.print("AccelY: ");
+  Serial.println(accel.y);
+  Serial.print("AccelZ: ");
+  Serial.println(accel.z);
+  delay_lock++;
+  if (accel.mag()>0.25 && delay_lock >= IMPACT_DELAY){
   Serial.print("A@E#F:");
+  delay_lock = 0;
     Serial.println(accel.mag());
+  Serial.print("AccelX: ");
+  Serial.println(accel.x);
+  Serial.print("AccelY: ");
+  Serial.println(accel.y);
+  Serial.print("AccelZ: ");
+  Serial.println(accel.z);
   }
 
 }
