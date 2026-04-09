@@ -31,6 +31,13 @@ HEADER_BG = (20, 20, 30)
 MAP_COLOR = (100, 105, 145)
 
 
+class Entry:
+    def __init__(self, x, y, accel):
+        self.x = x
+        self.y = y
+        self.accel = accel
+
+
 class CraterCreator:
     def __init__(self):
         pygame.init()
@@ -58,10 +65,8 @@ class CraterCreator:
         self.flash_alpha = 0
         self.desktop_mode = False
 
-        # Sensor values
-        self.alice = 0.0
-        self.bob = 0.0
-        self.carol = 0.0
+        self.entry: Entry = Entry(0, 0, 0)
+
         self.last_time = time.time()
 
         # Serial connection to ESP32
@@ -114,127 +119,6 @@ class CraterCreator:
     # FOV correction — readings beyond 25deg are stretched, scale them back
     FOV_ACCURATE = 25
     FOV_MAX = 40
-
-    def is_wall(self, reading):
-        """True if reading is at or near the far wall."""
-        return reading >= (self.BOX_X - self.WALL_TOLERANCE)
-
-    def correct_fov(self, reading):
-        """
-        Fringe readings (25-40 deg FOV) report further than reality.
-        We don't know the angle directly, but larger readings from nearby
-        objects are a proxy. Scale readings down proportionally in the
-        fringe zone. This is a best-effort correction for a kids exhibit.
-        """
-        # Fringe effect starts to matter beyond ~60% of max depth
-        fringe_start = self.BOX_X * 0.6
-        if reading <= fringe_start:
-            return reading
-        # Linearly scale back up to ~25% reduction at max depth
-        t = (reading - fringe_start) / (self.BOX_X - fringe_start)
-        correction = 1.0 - (t * 0.25)
-        return reading * correction
-
-    def trilaterate(self, sensors):
-        """
-        Given a list of (y_pos, distance) pairs, find best X,Y estimate.
-        Uses least-squares if 3 sensors, direct solve if 2,
-        and falls back to single sensor if only 1.
-        """
-        if len(sensors) == 0:
-            return None
-
-        if len(sensors) == 1:
-            # Only one sensor — we know distance but not angle,
-            # so place it directly in front of that sensor
-            sy, d = sensors[0]
-            return (d, sy)
-
-        if len(sensors) == 2:
-            # Two circles — find intersection, pick point with x > 0
-            (y1, r1), (y2, r2) = sensors
-            x1, x2 = 0, 0  # both sensors at x=0
-            d = abs(y2 - y1)
-            if d == 0 or d > r1 + r2:
-                # No intersection, take midpoint at average distance
-                return ((r1 + r2) / 2, (y1 + y2) / 2)
-            a = (r1**2 - r2**2 + d**2) / (2 * d)
-            h_sq = r1**2 - a**2
-            h = math.sqrt(max(h_sq, 0))
-            mid_y = y1 + a * (y2 - y1) / d
-            # Two candidate x positions — take positive one (into the box)
-            x_candidate = h
-            return (x_candidate, mid_y)
-
-        # Three sensors — least squares trilateration
-        # Linearize: subtract last equation from first two to remove x^2, y^2
-        (y1, r1), (y2, r2), (y3, r3) = sensors
-        # All sensors at x=0
-        A = []
-        b = []
-        for (ya, ra), (yb, rb) in [((y1, r1), (y3, r3)), ((y2, r2), (y3, r3))]:
-            A.append([0 - 0, 2 * (yb - ya)])  # 2*(xb-xa), 2*(yb-ya) — x terms cancel
-            b.append(rb**2 - ra**2 - yb**2 + ya**2)
-
-        # Solve 2x2 system manually
-        a00, a01 = A[0]
-        a10, a11 = A[1]
-        det = a00 * a11 - a01 * a10
-
-        if abs(det) < 1e-6:
-            # Degenerate — fall back to two-sensor solve
-            return self.trilaterate(sensors[:2])
-
-        # Since sensors are all at x=0, x terms vanish — solve for y first
-        # then back-substitute for x using first sensor
-        y_est = (
-            (b[0] * a10 - b[1] * a00) / (a01 * a10 - a11 * a00)
-            if (a01 * a10 - a11 * a00) != 0
-            else (y1 + y2 + y3) / 3
-        )
-        x_sq = r1**2 - (y_est - y1) ** 2
-        x_est = math.sqrt(max(x_sq, 0))
-
-        return (x_est, y_est)
-
-    def abc_crater_pos(self, alice, bob, carol):
-        """
-        Convert sensor readings to a canvas (x, y) position.
-        Filters wall readings, corrects FOV, trilaterates,
-        then maps to canvas coordinates.
-        """
-        raw = [
-            (self.SENSOR_POSITIONS[0], alice),
-            (self.SENSOR_POSITIONS[1], bob),
-            (self.SENSOR_POSITIONS[2], carol),
-        ]
-
-        # Filter out wall readings and zero/unset values
-        valid = [
-            (sy, self.correct_fov(d)) for sy, d in raw if d > 0 and not self.is_wall(d)
-        ]
-
-        if not valid:
-            return None
-
-        result = self.trilaterate(valid)
-        if result is None:
-            return None
-
-        px, py = result
-
-        # Clamp to box bounds
-        px = max(0, min(px, self.BOX_X))
-        py = max(0, min(py, self.BOX_Y))
-
-        # Normalize to 0-1 then map to canvas
-        x_pct = px / self.BOX_X
-        y_pct = py / self.BOX_Y
-
-        cx = MAP_MARGIN + x_pct * (MAP_W - 2 * MAP_MARGIN)
-        cy = TOP_BAR_H + MAP_MARGIN + y_pct * (MAP_H - 2 * MAP_MARGIN)
-
-        return (cx, cy)
 
     def draw_canvas(self):
         # Map Area
@@ -303,12 +187,26 @@ class CraterCreator:
             if not self.desktop_mode and self.ser.in_waiting:
                 line = self.ser.readline().decode("utf-8", errors="ignore").strip()
                 print(line)
-                #
-                # if line.startswith("A@E#F:"):
-                #     val = float(line[6:])
-                #     if not self.is_wall(val):
-                #         self.alice = val
-                #         self.last_time = time.time()
+
+                if line.startswith("A@E#F:"):
+                    val = float(line[6:])
+                    self.entry.accel = abs(val)
+
+                if line.startswith("X@E#F:"):
+                    val = float(line[6:])
+                    # accel.x maps to map x: normalize [-0.25,0.25] -> map pixel range
+                    t = max(0.0, min(1.0, (val + 0.25) / 0.5))
+                    self.entry.x = MAP_MARGIN + t * (MAP_W - 2 * MAP_MARGIN)
+
+                if line.startswith("Y@E#F:"):
+                    val = float(line[6:])
+                    # accel.z maps to map y: normalize [-0.25,0.25] -> map pixel range
+                    t = max(0.0, min(1.0, (val + 0.25) / 0.5))
+                    self.entry.y = TOP_BAR_H + MAP_MARGIN + t * (MAP_H - 2 * MAP_MARGIN)
+                    print(
+                        f"entry: {self.entry.x=}, {self.entry.y=}, {self.entry.accel=}"
+                    )
+                    self.trigger_crater(self.entry.accel, [self.entry.x, self.entry.y])
 
                 if line.startswith("B@E#F:"):
                     val = float(line[6:])
@@ -321,10 +219,6 @@ class CraterCreator:
                     if not self.is_wall(val):
                         self.carol = val
                         self.last_time = time.time()
-
-                elif line.startswith("A@E#F:"):
-                    accel = float(line[6:])
-                    self.crater_from_accelerometer(accel * 1000)
 
                 elif line.startswith("V@E#F:"):
                     accel = float(line[6:])

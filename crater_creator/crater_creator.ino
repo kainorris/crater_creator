@@ -23,13 +23,12 @@ void loop() {
 
     if (mag > IMPACT_THRESHOLD) {
         lastImpact = millis();
-        Serial.print("IMPACT | mag: ");
-        Serial.print(mag);
-        Serial.print(" | X: ");
-        Serial.print(accel.x);
-        Serial.print(" Y: ");
-        Serial.print(accel.y);
-        Serial.print(" Z: ");
-        Serial.println(accel.z);
+        Serial.print("A@E#F:");
+        Serial.println(accel.y);
+        Serial.print("X@E#F:");
+        Serial.println(accel.x);
+        Serial.print("Y@E#F:");
+        Serial.println(accel.z); // This is intentional as z~=y
+
     }
 }
