@@ -3,13 +3,14 @@
 #include <Wire.h>
 
 void Gyro::setup() {
-  Serial.begin(115200);
   delay(500);
 
-  Wire.begin();
-  delay(10);
+  delay(1000);
 
-  if (myIMU.begin())
+  int res = myIMU.begin();
+  Serial.print("res: ");
+  Serial.println(res);
+  if (res)
     Serial.println("Ready.");
   else {
     Serial.println("Could not connect to IMU.");
@@ -28,14 +29,15 @@ Point3D Gyro::loop() {
   };
   Point3D delta = current - prev;
   if (delta.x > 0 || delta.y > 0 || delta.z > 0) {
-    Serial.print("X: ");
-    Serial.println(delta.x);
-    Serial.print("Y: ");
-    Serial.println(delta.y);
-    Serial.print("Z: ");
-    Serial.println(delta.z);
-    Serial.println("<3");
+    // Serial.print("X: ");
+    // Serial.println(delta.x);
+    // Serial.print("Y: ");
+    // Serial.println(delta.y);
+    // Serial.print("Z: ");
+    // Serial.println(delta.z);
+    // Serial.println("<3");
   }
+  prev = current;
   return delta;
   delay(100);
 }

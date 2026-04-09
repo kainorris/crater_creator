@@ -86,6 +86,14 @@ class CraterCreator:
         )[:10]
         self.flash_alpha = 180
 
+    def crater_from_accelerometer(self, accel: float) -> None:
+        pos = (
+            MAP_MARGIN + random.random() * (MAP_W - 2 * MAP_MARGIN),
+            TOP_BAR_H + MAP_MARGIN + random.random() * (MAP_H - 2 * MAP_MARGIN),
+        )
+        vel = accel * 10
+        self.trigger_crater(vel, pos)
+
     def trigger_random_crater(self):
         """Fire a crater at a random map location with a random velocity."""
         vel = random.uniform(0.5, 5.0)
@@ -96,8 +104,8 @@ class CraterCreator:
         self.trigger_crater(vel, pos)
 
     # Physical box dimensions in mm
-    BOX_X = 355.6   # 14 inches
-    BOX_Y = 228.6   # 9 inches
+    BOX_X = 355.6  # 14 inches
+    BOX_Y = 228.6  # 9 inches
     WALL_TOLERANCE = 5.0  # mm
 
     # Sensor Y positions (1/4, 2/4, 3/4 of 9")
@@ -130,7 +138,7 @@ class CraterCreator:
     def trilaterate(self, sensors):
         """
         Given a list of (y_pos, distance) pairs, find best X,Y estimate.
-        Uses least-squares if 3 sensors, direct solve if 2, 
+        Uses least-squares if 3 sensors, direct solve if 2,
         and falls back to single sensor if only 1.
         """
         if len(sensors) == 0:
@@ -164,14 +172,14 @@ class CraterCreator:
         # All sensors at x=0
         A = []
         b = []
-        for (ya, ra), (yb, rb) in [((y1,r1),(y3,r3)), ((y2,r2),(y3,r3))]:
-            A.append([0 - 0, 2*(yb - ya)])  # 2*(xb-xa), 2*(yb-ya) — x terms cancel
+        for (ya, ra), (yb, rb) in [((y1, r1), (y3, r3)), ((y2, r2), (y3, r3))]:
+            A.append([0 - 0, 2 * (yb - ya)])  # 2*(xb-xa), 2*(yb-ya) — x terms cancel
             b.append(rb**2 - ra**2 - yb**2 + ya**2)
 
         # Solve 2x2 system manually
         a00, a01 = A[0]
         a10, a11 = A[1]
-        det = a00*a11 - a01*a10
+        det = a00 * a11 - a01 * a10
 
         if abs(det) < 1e-6:
             # Degenerate — fall back to two-sensor solve
@@ -179,8 +187,12 @@ class CraterCreator:
 
         # Since sensors are all at x=0, x terms vanish — solve for y first
         # then back-substitute for x using first sensor
-        y_est = (b[0]*a10 - b[1]*a00) / (a01*a10 - a11*a00) if (a01*a10 - a11*a00) != 0 else (y1+y2+y3)/3
-        x_sq = r1**2 - (y_est - y1)**2
+        y_est = (
+            (b[0] * a10 - b[1] * a00) / (a01 * a10 - a11 * a00)
+            if (a01 * a10 - a11 * a00) != 0
+            else (y1 + y2 + y3) / 3
+        )
+        x_sq = r1**2 - (y_est - y1) ** 2
         x_est = math.sqrt(max(x_sq, 0))
 
         return (x_est, y_est)
@@ -188,16 +200,19 @@ class CraterCreator:
     def abc_crater_pos(self, alice, bob, carol):
         """
         Convert sensor readings to a canvas (x, y) position.
-        Filters wall readings, corrects FOV, trilaterates, 
+        Filters wall readings, corrects FOV, trilaterates,
         then maps to canvas coordinates.
         """
-        raw = [(self.SENSOR_POSITIONS[0], alice),
-               (self.SENSOR_POSITIONS[1], bob),
-               (self.SENSOR_POSITIONS[2], carol)]
+        raw = [
+            (self.SENSOR_POSITIONS[0], alice),
+            (self.SENSOR_POSITIONS[1], bob),
+            (self.SENSOR_POSITIONS[2], carol),
+        ]
 
         # Filter out wall readings and zero/unset values
-        valid = [(sy, self.correct_fov(d)) for sy, d in raw
-                 if d > 0 and not self.is_wall(d)]
+        valid = [
+            (sy, self.correct_fov(d)) for sy, d in raw if d > 0 and not self.is_wall(d)
+        ]
 
         if not valid:
             return None
@@ -288,14 +303,14 @@ class CraterCreator:
             if not self.desktop_mode and self.ser.in_waiting:
                 line = self.ser.readline().decode("utf-8", errors="ignore").strip()
                 print(line)
+                #
+                # if line.startswith("A@E#F:"):
+                #     val = float(line[6:])
+                #     if not self.is_wall(val):
+                #         self.alice = val
+                #         self.last_time = time.time()
 
-                if line.startswith("A@E#F:"):
-                    val = float(line[6:])
-                    if not self.is_wall(val):
-                        self.alice = val
-                        self.last_time = time.time()
-
-                elif line.startswith("B@E#F:"):
+                if line.startswith("B@E#F:"):
                     val = float(line[6:])
                     if not self.is_wall(val):
                         self.bob = val
@@ -306,6 +321,10 @@ class CraterCreator:
                     if not self.is_wall(val):
                         self.carol = val
                         self.last_time = time.time()
+
+                elif line.startswith("A@E#F:"):
+                    accel = float(line[6:])
+                    self.crater_from_accelerometer(accel * 1000)
 
                 elif line.startswith("V@E#F:"):
                     accel = float(line[6:])

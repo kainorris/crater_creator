@@ -1,5 +1,6 @@
 #ifndef INCLUDE_CRATER_CREATOR_BASE_H_
 #define INCLUDE_CRATER_CREATOR_BASE_H_
+#include <cmath>
 struct Point2D {
   float x;
   float y;
@@ -13,6 +14,7 @@ struct Point3D {
         .z = z - other.z,
     };
   }
+  constexpr float mag() { return std::sqrt(x * x + y * y + z * z); }
 };
 
 #endif // INCLUDE_CRATER_CREATOR_BASE_H_
